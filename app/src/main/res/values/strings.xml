@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AndroidTrain</string>
+    <string name="search">Search</string>
+    <string name="setting">Settings</string>
+    <string name="dislpaymessage">DisplayMessage</string>
+    <string name="showactionbar">showactionbar</string>
+    <string name="hideactionbar">hideactionbar</string>
+</resources>
