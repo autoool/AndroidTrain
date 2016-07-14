@@ -10,4 +10,4 @@
 **Bottom Sheet**
 - 参考 [https://github.com/android-cjj/BottomSheets.git]
 
-![](./images/coordinator.gif)
+![](./images/gif01.gif)
