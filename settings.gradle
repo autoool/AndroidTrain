@@ -1,1 +1,1 @@
-include ':app', ':coordinator','commonlibrary'
+include ':app', ':coordinator', ':controls', 'commonlibrary'
