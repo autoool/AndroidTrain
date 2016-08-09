@@ -1,6 +1,7 @@
 package com.techidea.controls.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +15,14 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/8/9.
  */
-public class MySpinnerAdapter extends BaseAdapter {
+public class CommonSpinnerAdapter extends BaseAdapter {
 
     private List<SpinnerItem> mDatas;
-    private LayoutInflater mLayoutInflater;
+    private int textColor;
 
-    public MySpinnerAdapter(Context context, List<SpinnerItem> datas) {
+    public CommonSpinnerAdapter(List<SpinnerItem> datas, int textColor) {
         this.mDatas = datas;
-        this.mLayoutInflater = LayoutInflater.from(context);
+        this.textColor = textColor;
     }
 
     @Override
@@ -44,7 +45,7 @@ public class MySpinnerAdapter extends BaseAdapter {
         TextView textView;
         HolderItem holderItem;
         if (convertView == null) {
-            convertView = mLayoutInflater.inflate(R.layout.view_spinner_item, null);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_spinner_item, null);
             textView = (TextView) convertView.findViewById(R.id.textview_spinner_item);
             holderItem = new HolderItem();
             holderItem.mTextViewName = textView;
@@ -54,6 +55,7 @@ public class MySpinnerAdapter extends BaseAdapter {
             textView = holderItem.mTextViewName;
         }
         textView.setText(mDatas.get(position).getName());
+        textView.setTextColor(ContextCompat.getColor(parent.getContext(), textColor));
         return convertView;
     }
 

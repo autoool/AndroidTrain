@@ -7,7 +7,7 @@ import android.support.v7.widget.AppCompatSpinner;
 import android.view.Menu;
 
 import com.techidea.controls.R;
-import com.techidea.controls.adapter.MySpinnerAdapter;
+import com.techidea.controls.adapter.CommonSpinnerAdapter;
 import com.techidea.controls.adapter.SpinnerItem;
 
 import java.util.ArrayList;
@@ -27,7 +27,8 @@ public class SpinnerActivity extends AppCompatActivity {
     AppCompatSpinner mAppCompatSpinner2;
 
     private List<SpinnerItem> mSpinnerItems;
-    private MySpinnerAdapter mMySpinnerAdapter;
+    private CommonSpinnerAdapter mCommonSpinnerAdapter;
+    private CommonSpinnerAdapter mCommonSpinnerAdapterTwo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,20 +36,20 @@ public class SpinnerActivity extends AppCompatActivity {
         setContentView(R.layout.activiyt_spinner);
         ButterKnife.bind(this);
         initialize();
-        mAppCompatSpinner1.setDropDownVerticalOffset(60);
-        mAppCompatSpinner2.setDropDownVerticalOffset(60);
-        mMySpinnerAdapter = new MySpinnerAdapter(this, mSpinnerItems);
-        mAppCompatSpinner2.setAdapter(mMySpinnerAdapter);
+        mCommonSpinnerAdapter = new CommonSpinnerAdapter(mSpinnerItems, R.color.blue);
+        mCommonSpinnerAdapterTwo = new CommonSpinnerAdapter(mSpinnerItems, R.color.purple);
+        mAppCompatSpinner2.setAdapter(mCommonSpinnerAdapter);
+        mAppCompatSpinner1.setAdapter(mCommonSpinnerAdapterTwo);
     }
 
     private void initialize() {
         mSpinnerItems = new ArrayList<>();
-        mSpinnerItems.add(new SpinnerItem("1", "111111", "111"));
-        mSpinnerItems.add(new SpinnerItem("1", "111111", "111"));
-        mSpinnerItems.add(new SpinnerItem("1", "111111", "111"));
-        mSpinnerItems.add(new SpinnerItem("1", "111111", "111"));
-        mSpinnerItems.add(new SpinnerItem("1", "111111", "111"));
-        mSpinnerItems.add(new SpinnerItem("1", "111111", "111"));
+        mSpinnerItems.add(new SpinnerItem("1", "C语言", "111"));
+        mSpinnerItems.add(new SpinnerItem("1", "C++", "111"));
+        mSpinnerItems.add(new SpinnerItem("1", "Java", "111"));
+        mSpinnerItems.add(new SpinnerItem("1", "C#", "111"));
+        mSpinnerItems.add(new SpinnerItem("1", "Jquery", "111"));
+        mSpinnerItems.add(new SpinnerItem("1", "Swift", "111"));
     }
 
     @Override

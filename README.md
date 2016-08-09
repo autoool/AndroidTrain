@@ -11,3 +11,7 @@
 - 参考 [https://github.com/android-cjj/BottomSheets.git]
 
 ![](./images/gif01.gif)
+
+## controls 控件
+- spinner 定义字体颜色
+  ![](./images/spinner.png)
