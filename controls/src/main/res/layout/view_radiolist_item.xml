@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tool="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
+
+    <RadioButton
+        android:id="@+id/radiobutton_item"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/radiobutton_select"
+        android:clickable="false"
+        android:contextClickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        />
+
+    <TextView
+        android:id="@+id/textview_radio_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_toLeftOf="@id/radiobutton_item"
+        android:layout_toStartOf="@id/radiobutton_item"
+        android:gravity="center_vertical"
+        tool:text="RadioText"/>
+
+</RelativeLayout>

@@ -19,8 +19,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.textview_spinner)
-    void textviewSpinnerClick(){
-        startActivity(new Intent(this,SpinnerActivity.class));
+    void textviewSpinnerClick() {
+        startActivity(new Intent(this, SpinnerActivity.class));
+    }
+
+    @OnClick(R.id.textview_radiolist)
+    void textviewRadioList() {
+        startActivity(new Intent(this, RadioListActivity.class));
     }
 
     @Override

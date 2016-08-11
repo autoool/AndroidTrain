@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -160,6 +161,12 @@ public class BaseRecyclerHolder extends RecyclerView.ViewHolder {
     public BaseRecyclerHolder setViewSelected(int viewId, boolean select) {
         View view = getView(viewId);
         view.setSelected(select);
+        return this;
+    }
+
+    public BaseRecyclerHolder setRadioButtonChecked(int viewId, boolean check) {
+        RadioButton view = (RadioButton) getView(viewId);
+        view.setChecked(check);
         return this;
     }
 
