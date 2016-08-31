@@ -1,1 +1,1 @@
-include ':app', ':coordinator', ':controls', 'commonlibrary'
+include ':app', ':coordinator', ':controls', ':demand', 'commonlibrary'
