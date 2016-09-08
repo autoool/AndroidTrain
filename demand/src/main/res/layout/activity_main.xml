@@ -17,8 +17,21 @@
             android:text="add data"
             android:layout_height="match_parent"/>
 
+        <Button
+            android:id="@+id/material"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:text="material"
+            android:layout_height="match_parent"/>
+
+        <Button
+            android:id="@+id/load"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:text="loading"
+            android:layout_height="match_parent"/>
+
 
     </LinearLayout>
-
 
 </RelativeLayout>

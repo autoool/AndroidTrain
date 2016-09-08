@@ -11,4 +11,11 @@
     <color name="purple">#8e44ad</color>
 
     <color name="white">#ecf0f1</color>
+    <color name="black">#000000</color>
+
+    <color name="dialogbutton">#4285F4</color>
+    <color name="dialogtext">#757575</color>
+    <color name="dialogtitle">#212121</color>
+
+
 </resources>
