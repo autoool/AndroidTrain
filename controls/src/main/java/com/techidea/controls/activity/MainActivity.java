@@ -46,6 +46,15 @@ public class MainActivity extends AppCompatActivity {
         showMessageDialog("messagdialog");
     }
 
+    @OnClick(R.id.textview_startapp)
+    void startApp() {
+        AppUtil.startAppByPackageName(this, "com.techidea.demand");
+    }
+
+    @OnClick(R.id.textview_appcompat)
+    void appcompat() {
+        startActivity(new Intent(this, AppCompatTestActivity.class));
+    }
 
     @Override
     protected void onDestroy() {
@@ -71,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             ft.remove(prv);
         }
         ft.addToBackStack(null);
-        final MessageDialog  newFragment = MessageDialog.newInstance();
+        final MessageDialog newFragment = MessageDialog.newInstance();
         newFragment.setMessage(msg);
         newFragment.setConfirmListener(new View.OnClickListener() {
             @Override
