@@ -8,6 +8,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.text.TextPaint;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -24,20 +26,22 @@ public class CustomImageText extends View {
     private int textSize;
     private Bitmap bitmap;
     private int scaleType;
+    private static final int SCALE_FITXY = 0;
+    private static final int SCALE_CENTER = 1;
 
 
     private Rect rect;
-    private Rect rect2;
+    private Rect rectImage;
     private Paint paint;
     private int width;
     private int height;
 
     public CustomImageText(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public CustomImageText(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
     public CustomImageText(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -69,8 +73,10 @@ public class CustomImageText extends View {
         }
         typedArray.recycle();
         rect = new Rect();
-        rect2 = new Rect();
+        rectImage = new Rect();
         paint = new Paint();
+        paint.setTextSize(textSize);
+        paint.getTextBounds(text, 0, text.length(), rect);
     }
 
     @Override
@@ -104,11 +110,40 @@ public class CustomImageText extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+
         paint.setStrokeWidth(2);
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.BLUE);
         canvas.drawRect(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
 
-//        rect.left =
+        rectImage.left = getPaddingLeft();
+        rectImage.right = width - getPaddingRight();
+        rectImage.top = getPaddingTop();
+        rectImage.bottom = height - getPaddingBottom();
+
+        paint.setColor(textColor);
+        paint.setStyle(Paint.Style.FILL);
+
+        if (rect.width() > width) {
+            TextPaint paint = new TextPaint(this.paint);
+            String msg = TextUtils.ellipsize(text, paint,
+                    (float) width - getPaddingLeft() - getPaddingRight(),
+                    TextUtils.TruncateAt.END).toString();
+            canvas.drawText(msg, getPaddingLeft(), height - getPaddingBottom(), paint);
+        } else {
+            canvas.drawText(text, width / 2 - rect.width() * 1.0f / 2,
+                    height - getPaddingBottom(), paint);
+        }
+        rectImage.bottom -= rect.height();
+
+        if (scaleType == SCALE_FITXY) {
+            canvas.drawBitmap(bitmap, null, rectImage, paint);
+        } else {
+            rectImage.left = width / 2 - bitmap.getWidth() / 2;
+            rectImage.right = width / 2 + bitmap.getWidth() / 2;
+            rectImage.top = (height - rect.height()) / 2 - bitmap.getHeight() / 2;
+            rectImage.bottom = (height - rect.height()) / 2 + bitmap.getHeight() / 2;
+            canvas.drawBitmap(bitmap, null, rectImage, paint);
+        }
     }
 }
