@@ -10,6 +10,13 @@
         <enum name="center" value="1"/>
     </attr>
 
+    <attr name="firstColor" format="color" />
+    <attr name="secondColor" format="color" />
+    <attr name="circleWidth" format="dimension" />
+    <attr name="dotCount" format="integer" />
+    <attr name="splitSize" format="integer" />
+    <attr name="bg" format="reference"/>
+
     <declare-styleable name="CustomTitTextView">
         <attr name="text"/>
         <attr name="textColor"/>
@@ -22,5 +29,14 @@
         <attr name="textSize"/>
         <attr name="src"/>
         <attr name="ScaleType"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomVolumControlBar">
+        <attr name="firstColor" />
+        <attr name="secondColor" />
+        <attr name="circleWidth" />
+        <attr name="dotCount" />
+        <attr name="splitSize" />
+        <attr name="bg" />
     </declare-styleable>
 </resources>

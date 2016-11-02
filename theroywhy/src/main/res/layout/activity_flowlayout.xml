@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E1E6F6"
+    android:orientation="vertical">
+
+    <com.techidea.theroywhy.customview.FlowLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/TextFlag_Normal"
+            android:background="@drawable/flag_noraml"
+            android:text="Java Think" />
+
+        <TextView
+            style="@style/TextFlag_Normal"
+
+            android:text="Java Think" />
+
+        <TextView
+            style="@style/TextFlag_Normal"
+
+            android:text="Java Think" />
+
+        <TextView
+            style="@style/TextFlag_Normal"
+
+            android:text="Java Think" />
+
+        <TextView
+            style="@style/TextFlag_Normal"
+            android:text="Java Think" />
+        <TextView
+            style="@style/TextFlag_Normal"
+            android:text="Java Think" />
+        <TextView
+            style="@style/TextFlag_Normal"
+            android:text="Java Think" />
+
+    </com.techidea.theroywhy.customview.FlowLayout>
+
+    <com.techidea.theroywhy.customview.FlowLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/TextFlag_Light"
+            android:text="Java ThinkJava ThinkJava ThinkJava ThinkJava ThinkJava ThinkJava ThinkJava Think"
+            android:textColor="@color/blue_light" />
+
+        <TextView
+            style="@style/TextFlag_Light"
+            android:text="Java Think"
+            android:textColor="@color/blue_light" />
+
+        <TextView
+            style="@style/TextFlag_Light"
+            android:text="Java Think"
+            android:textColor="@color/blue_light" />
+
+        <TextView
+            style="@style/TextFlag_Light"
+            android:text="Java Think"
+            android:textColor="@color/blue_light" />
+        <TextView
+            style="@style/TextFlag_Light"
+            android:text="Java Think"
+            android:textColor="@color/blue_light" />
+        <TextView
+            style="@style/TextFlag_Light"
+            android:text="Java Think"
+            android:textColor="@color/blue_light" />
+
+        <TextView
+            style="@style/TextFlag_Light"
+            android:text="Java Java ThinkJava TJava ThinkJava ThinkJava
+            ThinkhinkJava ThinkJava ThinkJava ThinkJava
+            ThinkJava ThinkJava Think"
+            android:textColor="@color/blue_light"
+            />
+
+    </com.techidea.theroywhy.customview.FlowLayout>
+
+</LinearLayout>

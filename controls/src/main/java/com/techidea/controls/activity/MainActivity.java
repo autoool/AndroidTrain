@@ -18,11 +18,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
+
 public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.coordinatorlayout)
     CoordinatorLayout coordinatorLayout;
-
+    ZXingScannerView zXingScannerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -20,3 +20,8 @@
 - Listview RadioButton 单项选择
 
 ![](./images/radiolist.png)
+
+## theroywhy  原理
+### view的动画与属性动画
+#### 
+AlphaAnimation（透明度动画）、RotateAnimation（旋转动画）、ScaleAnimation（缩放动画）、TranslateAnimation（平移动画）
