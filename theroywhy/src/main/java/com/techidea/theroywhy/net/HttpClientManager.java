@@ -53,7 +53,7 @@ public class HttpClientManager {
         String result = "";
         HttpGet httpGet = new HttpGet(url);
         try {
-            HttpResponse httpResponse = getHttpClient().execute(httpGet);
+            HttpResponse httpResponse = getHttpsOneWayClient().execute(httpGet);
             if (httpResponse.getStatusLine().getStatusCode() == 200) {
                 result = EntityUtils.toString(httpResponse.getEntity());
             } else {

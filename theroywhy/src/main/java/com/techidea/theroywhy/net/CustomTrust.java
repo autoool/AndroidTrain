@@ -1,13 +1,18 @@
 package com.techidea.theroywhy.net;
 
+import android.provider.SyncStateContract;
+import android.util.Log;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
+import java.security.SecureRandom;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -16,10 +21,14 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import okhttp3.CipherSuite;
+import okhttp3.Connection;
+import okhttp3.ConnectionSpec;
 import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.TlsVersion;
 import okio.Buffer;
 
 /**
@@ -28,31 +37,59 @@ import okio.Buffer;
 
 public class CustomTrust {
 
+    private String TAG = "CustomTrust";
+
     private final OkHttpClient client;
+    private CustomSSLSocketFactory customSSLSocketFactory;
 
     public CustomTrust() {
         X509TrustManager trustManager;
         SSLSocketFactory sslSocketFactory;
         try {
             trustManager = trustManagerForCertificates(trustedCertificatesInputStream());
+
             SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, new TrustManager[] { trustManager }, null);
+            sslContext.init(null, new TrustManager[]{trustManager}, null);
             sslSocketFactory = sslContext.getSocketFactory();
+
         } catch (GeneralSecurityException e) {
             throw new RuntimeException(e);
         }
 
+        ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+                .tlsVersions(TlsVersion.TLS_1_2)
+                .cipherSuites(
+                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+                        CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
+                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
+                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
+                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
+                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+                        CipherSuite.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA,
+                        CipherSuite.TLS_ECDHE_RSA_WITH_RC4_128_SHA,
+                        CipherSuite.TLS_DHE_RSA_WITH_AES_128_CBC_SHA,
+                        CipherSuite.TLS_DHE_DSS_WITH_AES_128_CBC_SHA,
+                        CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA)
+                .build();
+
         client = new OkHttpClient.Builder()
-                .sslSocketFactory(sslSocketFactory, trustManager)
+                .sslSocketFactory(customSSLSocketFactory, trustManager)
+//                .connectionSpecs(Collections.singletonList(spec))
                 .build();
     }
 
-    public void run() throws Exception {
+    public void run() {
+//        Request request = new Request.Builder()
+//                .url("https://publicobject.com/helloworld.txt")
+//                .build();
+
         Request request = new Request.Builder()
-                .url("https://publicobject.com/helloworld.txt")
+                .url("https://192.168.0.115:8443/")
                 .build();
 
-        try (Response response = client.newCall(request).execute()) {
+        try {
+            Response response = client.newCall(request).execute();
             if (!response.isSuccessful())
                 throw new IOException("Unexpected code " + response);
 
@@ -60,8 +97,11 @@ public class CustomTrust {
             for (int i = 0; i < responseHeaders.size(); i++) {
                 System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
             }
-
             System.out.println(response.body().string());
+            Log.v(TAG, response.body().string());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            Log.v(TAG, e.getMessage().toString());
         }
     }
 
@@ -71,6 +111,51 @@ public class CustomTrust {
      * file that gets bundled with the application.
      */
     private InputStream trustedCertificatesInputStream() {
+
+        String CER_SERVER_ZC = "" +
+                "-----BEGIN CERTIFICATE-----\n" +
+                "MIIDTTCCAjWgAwIBAgIEf67gmjANBgkqhkiG9w0BAQsFADBXMQswCQYDVQQGEwJj\n" +
+                "bjELMAkGA1UECBMCc2gxCzAJBgNVBAcTAnNoMQ4wDAYDVQQKEwV6aGFuZzEOMAwG\n" +
+                "A1UECxMFemhhbmcxDjAMBgNVBAMTBXpoYW5nMB4XDTE2MTEwMjAzMTYyMloXDTI2\n" +
+                "MDkxMTAzMTYyMlowVzELMAkGA1UEBhMCY24xCzAJBgNVBAgTAnNoMQswCQYDVQQH\n" +
+                "EwJzaDEOMAwGA1UEChMFemhhbmcxDjAMBgNVBAsTBXpoYW5nMQ4wDAYDVQQDEwV6\n" +
+                "aGFuZzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMGZoFVMlGUQLow7\n" +
+                "XSX0ntwoy53Tg5VuGCgHU5TOsOiHswLInHXPrPprjdkfEavTSYdoCSBloDOdyDMM\n" +
+                "aY093dIsmIx2oA/e608b/xF655jd25QC3zqdTi0cArNnY9d6mStn26XcG4Hul3y+\n" +
+                "e+VYa9K60+BBAWKMBwhlFx1bb/sHfInPF+9AK0VUnjbrWbDOmRjSRRYILCiyLVpo\n" +
+                "t3YiR0GofBMe7xGXIOknTOfmQPnsT6N9sbUivV2qHmr1xUeR2m3fUDxqUyteJmWP\n" +
+                "7UH47LETeoYq97EW7eQOjDR+ARlzd1x4HA01Rw2KrPHAYvpcEskZdR2rCLopmCmy\n" +
+                "HXS7E0kCAwEAAaMhMB8wHQYDVR0OBBYEFAifYms7n5CxQNOJmejQeQla4iJeMA0G\n" +
+                "CSqGSIb3DQEBCwUAA4IBAQBEayaS0GvqC7NqfA880f/V7Lq5g8h8Gm2LwCYuOVRQ\n" +
+                "/M2DMAuRxVJhH7Dy6PZaYHIEEeeP0lrII4Raryym5TRSaNze51EfDWOpg6VBzNnU\n" +
+                "IoxpPFPA7PI06P6YCxtElEjplFbGYX2poWyFSp6gGVtlXeXOo9gO39KhXvyGD+HX\n" +
+                "jHNnDM3z3umnxAwe5JQQCBcFBiW4xjthVIWWkhJkwnUgsOmmiBG0XaZzirjnEmse\n" +
+                "Y7BBQc/ysJUUdtZ6VXMHgjO94DlcFh7K0Pc0ciuZ4v+Qu0rasXzy8czx4P3RWttB\n" +
+                "V6JgBFIEf09R0OrP3bidU4cLXDeLV8CVMCgKaCF8zVzj\n" +
+                "-----END CERTIFICATE-----\n";
+
+        String CER_CLIENT_ZC = "" +
+                "-----BEGIN CERTIFICATE-----\n" +
+                "MIIDOzCCAiOgAwIBAgIEFFzMJzANBgkqhkiG9w0BAQsFADBOMQswCQYDVQQGEwJj\n" +
+                "bjELMAkGA1UECBMCc2gxCzAJBgNVBAcTAnNoMQswCQYDVQQKEwJ6YzELMAkGA1UE\n" +
+                "CxMCemMxCzAJBgNVBAMTAnpjMB4XDTE2MTEwMzAzMTAzMVoXDTI2MDkxMjAzMTAz\n" +
+                "MVowTjELMAkGA1UEBhMCY24xCzAJBgNVBAgTAnNoMQswCQYDVQQHEwJzaDELMAkG\n" +
+                "A1UEChMCemMxCzAJBgNVBAsTAnpjMQswCQYDVQQDEwJ6YzCCASIwDQYJKoZIhvcN\n" +
+                "AQEBBQADggEPADCCAQoCggEBAMe6/rlUMq71NFeS77wHoUUysgtTjr3pm/Oeu8n5\n" +
+                "LlIv5OVeTeRMIsybukpuHM3OY2iWAPtYH8xhqRZzUMXydX5/j7TZ613XHlD8gxfv\n" +
+                "sZmm50kTzSTbCQeZoQ5NsHTQD5H8gx//bC9PMes4eHirwld7Ez6wfXtDsk3hCZck\n" +
+                "Csm4ap1+314pre01IjJQareLsGZCKlz7lwAIBVvHZSeo6IDzSvpnl0LKEKSrJsVb\n" +
+                "dVj+Qzz5jNILVvLQyPdNpM3ZoHcTLrTdaG8cgI7uxzZ2sMwrOpHlvJLMHhY0E6BA\n" +
+                "Iavy0HXAdUGNMOxamQDF8VVFQ1+iBSkV7+OKIj/vG9OLhy0CAwEAAaMhMB8wHQYD\n" +
+                "VR0OBBYEFLra7tm6eNSp8yOvfgrhQhlllW0IMA0GCSqGSIb3DQEBCwUAA4IBAQAr\n" +
+                "tRTaIesJ/2e+dvc4lTFL5KVcV66e7t1+WIiFtbGjemeU0JHcVu7NC6NN3bf1C3AL\n" +
+                "S1qnxEnsyvZSw3YsfFXmAqVX3umcbzzoyXeX2nuGr7LyQrxLE3aY3TI+m9l/idgl\n" +
+                "2feHtFfoNTbowhV7eiWWe/GCe2tt8TU8Rx5vtxM99z13ooiZOjs7gqFvGoIdgwMJ\n" +
+                "46xj3RQpmhTwOSPX0PmYbx16A3cFmd2Z3rC/xCwECV8P5SAld3LnTVnEsuQXpz/O\n" +
+                "6XRd9U0MoNeXE4pZAF9y80s46RUGVaUovRfcHCvmnC68e/kWY3P0argEZ8N3aU+5\n" +
+                "XtzhXpy0tcGgKPYWJv8c\n" +
+                "-----END CERTIFICATE-----\n";
+
         // PEM files for root certificates of Comodo and Entrust. These two CAs are sufficient to view
         // https://publicobject.com (Comodo) and https://squareup.com (Entrust). But they aren't
         // sufficient to connect to most HTTPS sites including https://godaddy.com and https://visa.com.
@@ -138,26 +223,39 @@ public class CustomTrust {
                 + "eu6FSqdQgPCnXEqULl8FmTxSQeDNtGPPAUO6nIPcj2A781q0tHuu2guQOHXvgR1m\n"
                 + "0vdXcDazv/wor3ElhVsT/h5/WrQ8\n"
                 + "-----END CERTIFICATE-----\n";
-        return new Buffer()
-                .writeUtf8(comodoRsaCertificationAuthority)
-                .writeUtf8(entrustRootCertificateAuthority)
-                .inputStream();
+//        InputStream inputStream =
+//                new Buffer()
+//                        .writeUtf8(CER_SERVER_ZC)
+//                        .writeUtf8(CER_CLIENT_ZC)
+//                        .inputStream();
+        InputStream inputStream =
+                new Buffer()
+                        .writeUtf8(CER_CLIENT_ZC)
+                        .writeUtf8(CER_SERVER_ZC)
+                        .inputStream();
+
+//        InputStream inputStream =
+//                new Buffer()
+//                        .writeUtf8(comodoRsaCertificationAuthority)
+//                        .writeUtf8(entrustRootCertificateAuthority)
+//                        .inputStream();
+        return inputStream;
     }
 
     /**
      * Returns a trust manager that trusts {@code certificates} and none other. HTTPS services whose
      * certificates have not been signed by these certificates will fail with a {@code
      * SSLHandshakeException}.
-     *
+     * <p>
      * <p>This can be used to replace the host platform's built-in trusted certificates with a custom
      * set. This is useful in development where certificate authority-trusted certificates aren't
      * available. Or in production, to avoid reliance on third-party certificate authorities.
-     *
+     * <p>
      * <p>See also {@link }, which can limit trusted certificates while still using
      * the host platform's built-in trust store.
-     *
+     * <p>
      * <h3>Warning: Customizing Trusted Certificates is Dangerous!</h3>
-     *
+     * <p>
      * <p>Relying on your own trusted certificates limits your server team's ability to update their
      * TLS certificates. By installing a specific set of trusted certificates, you take on additional
      * operational complexity and limit your ability to migrate between certificate authorities. Do
@@ -173,7 +271,7 @@ public class CustomTrust {
         }
 
         // Put the certificates a key store.
-        char[] password = "password".toCharArray(); // Any password will work.
+        char[] password = "123456".toCharArray(); // Any password will work.
         KeyStore keyStore = newEmptyKeyStore(password);
         int index = 0;
         for (Certificate certificate : certificates) {
@@ -185,10 +283,14 @@ public class CustomTrust {
         KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(
                 KeyManagerFactory.getDefaultAlgorithm());
         keyManagerFactory.init(keyStore, password);
+
         TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
                 TrustManagerFactory.getDefaultAlgorithm());
         trustManagerFactory.init(keyStore);
+
         TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+        customSSLSocketFactory = new CustomSSLSocketFactory(keyManagerFactory.getKeyManagers(),
+                trustManagerFactory.getTrustManagers(), new SecureRandom());
         if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
             throw new IllegalStateException("Unexpected default trust managers:"
                     + Arrays.toString(trustManagers));

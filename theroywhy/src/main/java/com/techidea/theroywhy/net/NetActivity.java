@@ -62,6 +62,12 @@ public class NetActivity extends Activity {
 
     @OnClick(R.id.buttonhttpsclient)
     void buttonhttpsclient() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new CustomTrust().run();
+            }
+        }).start();
 
     }
 
