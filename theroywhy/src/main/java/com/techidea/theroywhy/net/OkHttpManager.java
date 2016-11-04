@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
@@ -77,6 +78,12 @@ public class OkHttpManager {
         String result = "";
         try {
             Request request = new Request.Builder()
+                    .addHeader("","")
+                    .addHeader("","")
+                    .addHeader("","")
+                    .addHeader("","")
+                    .addHeader("","")
+                    .addHeader("","")
                     .url(url)
                     .build();
 
@@ -98,7 +105,7 @@ public class OkHttpManager {
                     .url(url)
                     .build();
 
-            Response response = getOkHttpsOneWayClient()
+            Response response = getOkHttpsBothWayClient()
                     .newCall(request).execute();
             result = response.body().string();
             System.out.println(TAG + " " + result);
@@ -109,12 +116,12 @@ public class OkHttpManager {
     }
 
 
-    public void setCertificates(InputStream clientStream, String clientPwd,
-                                InputStream serverStream, String serverPwd) {
+    public void setBothCertificates(InputStream clientStream, String clientPwd,
+                                    InputStream serverStream, String serverPwd) {
 //trust server
         KeyStore clientStore;
         KeyStore serverStore;
-        final String DEFAULT_KEY_TYPE = "bks";
+        final String DEFAULT_KEY_TYPE = "BKS";
         final String DEFAULT_KEY_MANAGER_TYPE = "X509";
 
         try {
@@ -160,9 +167,10 @@ public class OkHttpManager {
                             CipherSuite.TLS_DHE_DSS_WITH_AES_128_CBC_SHA,
                             CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA)
                     .build();
-            okHttpsOneWayClient = new OkHttpClient.Builder()
-                    .sslSocketFactory(sslContext.getSocketFactory(),
-                            (X509TrustManager) trustManagers[0]).build();
+            okHttpsBothWayClient = new OkHttpClient.Builder()
+                    .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustManagers[0])
+//                    .hostnameVerifier(hostnameVerifier)
+                    .build();
 //            okHttpsOneWayClient = new OkHttpClient.Builder()
 //                    .sslSocketFactory(sslContext.getSocketFactory())
 //                    .build();
@@ -189,7 +197,7 @@ public class OkHttpManager {
 //                    TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 //
 //            KeyStore clientKeyStore = KeyStore.getInstance("BKS");
-//            clientKeyStore.load(context.getAssets().open("zchao_client.bks"), "123456".toCharArray());
+//            clientKeyStore.load(context.getAssets().open("zchao_clientbks.bks"), "123456".toCharArray());
 //            KeyManagerFactory keyManagerFactory = KeyManagerFactory
 // .getInstance(KeyManagerFactory.getDefaultAlgorithm());
 //            keyManagerFactory.init(clientKeyStore, "123456".toCharArray());
@@ -209,7 +217,57 @@ public class OkHttpManager {
 
     }
 
-    public void setBothWayCertificates(InputStream... certificates) {
+    //单项认证增加verify
+    HostnameVerifier hostnameVerifier = new HostnameVerifier() {
+        @Override
+        public boolean verify(String hostname, SSLSession session) {
+            HostnameVerifier hv =
+                    HttpsURLConnection.getDefaultHostnameVerifier();
+//            return hv.verify("https://www.barehuman.com", session);
+            return true;
+        }
+    };
+
+    public void setONECertificates(InputStream... certificates) {
+        try {
+            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            keyStore.load(null);
+            int index = 0;
+            for (InputStream certificate : certificates) {
+                String certificateAlias = Integer.toString(index++);
+                keyStore.setCertificateEntry(certificateAlias, certificateFactory.generateCertificate(certificate));
+
+                try {
+                    if (certificate != null)
+                        certificate.close();
+                } catch (IOException e) {
+                }
+            }
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+
+            TrustManagerFactory trustManagerFactory =
+                    TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+
+            trustManagerFactory.init(keyStore);
+            sslContext.init
+                    (
+                            null,
+                            trustManagerFactory.getTrustManagers(),
+                            new SecureRandom()
+                    );
+            okHttpsOneWayClient = new OkHttpClient.Builder()
+                    .sslSocketFactory(sslContext.getSocketFactory())
+                    .hostnameVerifier(hostnameVerifier)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+  /*  public void setBothWayCertificates(InputStream... certificates) {
         try {
             CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
             KeyStore serverKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -250,17 +308,22 @@ public class OkHttpManager {
                     trustManagerFactory.getTrustManagers(),
                     new SecureRandom());
             okHttpsBothWayClient = new OkHttpClient.Builder()
-                    .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustManagers[0] )
+                    .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustManagers[0])
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-    }
+    }*/
 
     //单向认证
     public OkHttpClient getOkHttpsOneWayClient() {
         return okHttpsOneWayClient;
+    }
+
+    //单向认证
+    public OkHttpClient getOkHttpsBothWayClient() {
+        return okHttpsBothWayClient;
     }
 
     public OkHttpClient getOkHttpClient() {

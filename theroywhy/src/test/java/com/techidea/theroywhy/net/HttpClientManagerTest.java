@@ -13,7 +13,6 @@ public class HttpClientManagerTest {
 
     @Before
     public void setup() {
-        httpClientManager = new HttpClientManager();
     }
 
     @Test

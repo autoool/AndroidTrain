@@ -32,15 +32,17 @@ public class NetActivity extends Activity {
     HttpClientManager httpClientManager;
     NetHandle netHandle;
     OkHttpManager okHttpManager;
+    VolleyManager volleyManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_net);
         ButterKnife.bind(this);
-        httpClientManager = new HttpClientManager();
+        httpClientManager = new HttpClientManager(this);
         netHandle = new NetHandle();
         okHttpManager = OkHttpManager.getInstance();
+        volleyManager = new VolleyManager(getApplicationContext());
     }
 
     @OnClick(R.id.buttonclean)
@@ -53,11 +55,10 @@ public class NetActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String result = httpClientManager.httpClientGet(Contast.URL_LOCALHOST_HTTPS_ONE);
+                String result = httpClientManager.httpsClientGet(Contast.URL_ALI_HTTPS);
                 sendMessage(result);
             }
         }).start();
-
     }
 
     @OnClick(R.id.buttonhttpsclient)
@@ -90,7 +91,13 @@ public class NetActivity extends Activity {
 
     @OnClick(R.id.buttonokhttps)
     void buttonokhttps() {
-
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String result = okHttpManager.runHttpBothWay(Contast.URL_ALI_HTTPS);
+                sendMessage(result);
+            }
+        }).start();
     }
 
     @OnClick(R.id.buttonokhttpsone)
@@ -98,7 +105,7 @@ public class NetActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String result = okHttpManager.runHttpOneWay(Contast.URL_LOCALHOST_HTTPS_ONE);
+                String result = okHttpManager.runHttpOneWay(Contast.URL_ALI_HTTPS);
                 sendMessage(result);
             }
         }).start();
@@ -117,6 +124,26 @@ public class NetActivity extends Activity {
     @OnClick(R.id.buttonhttpsurlone)
     void buttonhttpsurlone() {
 
+    }
+
+    @OnClick(R.id.buttonvolley)
+    void volley() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                volleyManager.requestGet(Contast.URL_ALI_HTTPS);
+            }
+        }).start();
+    }
+
+    @OnClick(R.id.buttonhttpsvolley)
+    void buttonhttpsvolley() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                volleyManager.requestHttpsGet(Contast.URL_ALI_HTTPS);
+            }
+        }).start();
     }
 
     private void sendMessage(String msg) {

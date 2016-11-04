@@ -1,8 +1,13 @@
 package com.techidea.theroywhy.net;
 
+import android.content.Context;
+import android.net.SSLCertificateSocketFactory;
 import android.util.Log;
 
+import com.techidea.theroywhy.R;
+
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -10,6 +15,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.params.HttpClientParams;
 import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
@@ -23,12 +29,26 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.List;
 
+import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 
@@ -42,10 +62,11 @@ public class HttpClientManager {
     private String TAG = "HttpClientManager";
     private HttpClient httpClient;
     private HttpParams httpParams;
+    private Context context;
 
-
-    public HttpClientManager() {
+    public HttpClientManager(Context context) {
         this.httpParams = new BasicHttpParams();
+        this.context = context;
     }
 
     //
@@ -53,7 +74,7 @@ public class HttpClientManager {
         String result = "";
         HttpGet httpGet = new HttpGet(url);
         try {
-            HttpResponse httpResponse = getHttpsOneWayClient().execute(httpGet);
+            HttpResponse httpResponse = getHttpClient().execute(httpGet);
             if (httpResponse.getStatusLine().getStatusCode() == 200) {
                 result = EntityUtils.toString(httpResponse.getEntity());
             } else {
@@ -87,11 +108,12 @@ public class HttpClientManager {
         return result;
     }
 
-    public void httpsClientGet(String url) {
+    public String httpsClientGet(String url) {
         String result = "";
-        HttpGet httpGet = new HttpGet(url);
+        HttpPost httpGet = new HttpPost(url);
         try {
-            HttpResponse httpResponse = getHttpsOneWayClient().execute(httpGet);
+            HttpResponse httpResponse = getHttpsClient()
+                    .execute(httpGet);
             if (httpResponse.getStatusLine().getStatusCode() == 200) {
                 result = EntityUtils.toString(httpResponse.getEntity());
             } else {
@@ -102,6 +124,7 @@ public class HttpClientManager {
         }
         System.out.println(result);
         Log.v(TAG, result);
+        return result;
     }
 
     public void httpsClientPost(String url, List<NameValuePair> params) {
@@ -109,7 +132,7 @@ public class HttpClientManager {
         String result = "";
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-            HttpResponse httpResponse = getHttpsOneWayClient().execute(httpPost);
+            HttpResponse httpResponse = getHttpsClient().execute(httpPost);
             if (httpResponse.getStatusLine().getStatusCode() == 200) {
                 result = EntityUtils.toString(httpResponse.getEntity());
             } else {
@@ -123,41 +146,6 @@ public class HttpClientManager {
         Log.v(TAG, result);
     }
 
-    public void httpssClientGet(String url) {
-        String result = "";
-        HttpGet httpGet = new HttpGet(url);
-        try {
-            HttpResponse httpResponse = getHttpsBothWayClient().execute(httpGet);
-            if (httpResponse.getStatusLine().getStatusCode() == 200) {
-                result = EntityUtils.toString(httpResponse.getEntity());
-            } else {
-                result = "Error Response" + httpResponse.getStatusLine().toString();
-            }
-        } catch (Exception e) {
-            result = e.getMessage().toString();
-        }
-        System.out.println(result);
-        Log.v(TAG, result);
-    }
-
-    public void httpssClientPost(String url, List<NameValuePair> params) {
-        HttpPost httpPost = new HttpPost(url);
-        String result = "";
-        try {
-            httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-            HttpResponse httpResponse = getHttpsBothWayClient().execute(httpPost);
-            if (httpResponse.getStatusLine().getStatusCode() == 200) {
-                result = EntityUtils.toString(httpResponse.getEntity());
-            } else {
-                result = "Error Response: " +
-                        httpResponse.getStatusLine().toString();
-            }
-        } catch (Exception e) {
-            result = e.getMessage().toString();
-        }
-        System.out.println(result);
-        Log.v(TAG, result);
-    }
 
     private HttpClient getHttpClient() {
 
@@ -175,19 +163,94 @@ public class HttpClientManager {
 //        schReg.register(new Scheme("https", SSLSocketFactory.getSocketFactory(), 443));
         ClientConnectionManager connMgr = new ThreadSafeClientConnManager(httpParams, schReg);
 //        httpClient = new DefaultHttpClient();
-        httpClient = new DefaultHttpClient(connMgr,httpParams);
+        httpClient = new DefaultHttpClient(connMgr, httpParams);
         return httpClient;
     }
 
-    //默認 使用系統承認的商業證書
+    //https双向认证
 
-    private HttpClient getHttpsOneWayClient() {
-        httpClient = new DefaultHttpClient();
+    private HttpClient getHttpsClient() {
+        if (null == httpClient) {
+            try {
+                InputStream keyStream = context.getResources().openRawResource(R.raw.zchao_clientbks);
+                InputStream trustStream = context.getResources().openRawResource(R.raw.zchao_serverbks);
+                KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+                trustStore.load(trustStream, "123456".toCharArray());
+                KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+                keyStore.load(keyStream, "123456".toCharArray());
+                SSLSocketFactory sslSocketFactory = new SSLSocketFactory(keyStore, "123456", trustStore);
+//                sslSocketFactory.setHostnameVerifier(SSLSocketFactoryEx.ALLOW_ALL_HOSTNAME_VERIFIER);
+//                SSLSocketFactoryEx sslSocketFactory = new SSLSocketFactoryEx(keyStore);
+//                SSLCertificateSocketFactory
+
+                KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("X509");
+                TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance("X509");
+                keyManagerFactory.init(keyStore, "123456".toCharArray());
+                trustManagerFactory.init(trustStore);
+                TLSSocketFactory tlsSocketFactory = new TLSSocketFactory(
+                        keyManagerFactory.getKeyManagers(),
+                        trustManagerFactory.getTrustManagers(),
+                        new SecureRandom());
+
+                HttpParams params = new BasicHttpParams();
+                HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+                HttpProtocolParams.setContentCharset(params, HTTP.DEFAULT_CONTENT_CHARSET);
+                HttpProtocolParams.setUseExpectContinue(params, true);
+                ConnManagerParams.setTimeout(params, 10000);
+                HttpConnectionParams.setConnectionTimeout(params, 10000);
+                HttpConnectionParams.setSoTimeout(params, 10000);
+                SchemeRegistry schemeRegistry = new SchemeRegistry();
+                schemeRegistry.register(new Scheme("https", sslSocketFactory, 8443));
+                ClientConnectionManager clientConnectionManager = new ThreadSafeClientConnManager(params, schemeRegistry);
+                httpClient = new DefaultHttpClient(clientConnectionManager, params);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new DefaultHttpClient();
+            }
+        }
         return httpClient;
     }
 
     private HttpClient getHttpsBothWayClient() {
         httpClient = new DefaultHttpClient();
         return httpClient;
+    }
+
+    private class SSLSocketFactoryEx extends SSLSocketFactory {
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+
+        public SSLSocketFactoryEx(KeyStore keyStore)
+                throws NoSuchAlgorithmException, KeyManagementException,
+                KeyStoreException, UnrecoverableKeyException {
+            super(keyStore);
+
+            TrustManager trustManager = new X509TrustManager() {
+                @Override
+                public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+
+                }
+
+                @Override
+                public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+
+                }
+
+                @Override
+                public X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+            };
+            sslContext.init(null, new TrustManager[]{trustManager}, null);
+        }
+
+        @Override
+        public Socket createSocket() throws IOException {
+            return sslContext.getSocketFactory().createSocket();
+        }
+
+        @Override
+        public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException {
+            return sslContext.getSocketFactory().createSocket(socket, host, port, autoClose);
+        }
     }
 }

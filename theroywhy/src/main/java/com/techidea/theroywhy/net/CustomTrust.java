@@ -14,8 +14,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
@@ -25,8 +28,10 @@ import okhttp3.CipherSuite;
 import okhttp3.Connection;
 import okhttp3.ConnectionSpec;
 import okhttp3.Headers;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.TlsVersion;
 import okio.Buffer;
@@ -75,17 +80,39 @@ public class CustomTrust {
 
         client = new OkHttpClient.Builder()
                 .sslSocketFactory(customSSLSocketFactory, trustManager)
+//                .hostnameVerifier(hostnameVerifier)
 //                .connectionSpecs(Collections.singletonList(spec))
                 .build();
     }
+
+    HostnameVerifier hostnameVerifier = new HostnameVerifier() {
+        @Override
+        public boolean verify(String hostname, SSLSession session) {
+            HostnameVerifier hv =
+                    HttpsURLConnection.getDefaultHostnameVerifier();
+//            return hv.verify("https://www.barehuman.com:8443/", session);
+            return true;
+        }
+    };
 
     public void run() {
 //        Request request = new Request.Builder()
 //                .url("https://publicobject.com/helloworld.txt")
 //                .build();
-
+        String param = "00 5B 60 00 03 00 00 60 31 00 31 13 12 08 00 00 20 00 00 00 c0 00" +
+                " 16 00 00 01 31 30 30 30 30 31 35 39 38 38 30 32 31 30 30 31 30 32 31 30 31 " +
+                "36 30 00 11 00 00 00 01 00 30 00 29 53 65 71 75 65 6e 63 65 20 4e 6f 31 36 33 " +
+                "31 35 30 53 58 58 2d 34 43 33 30 34 31 31 39 00 03 30 31 20";
+        MediaType str = MediaType.parse("text/x-markdown; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(str, param);
         Request request = new Request.Builder()
-                .url("https://192.168.0.115:8443/")
+                .header("POST", "")
+                .header("User-Agent:", "Donjin Http 0.1")
+                .header("Content-Type:", "x-ISO-TPDU/x-auth")
+                .header("Accept:", "*/*")
+                .header("Content-Length:", String.valueOf(param.length()))
+                .url("https://202.101.25.188:20141/")
+                .post(requestBody)
                 .build();
 
         try {
@@ -223,6 +250,30 @@ public class CustomTrust {
                 + "eu6FSqdQgPCnXEqULl8FmTxSQeDNtGPPAUO6nIPcj2A781q0tHuu2guQOHXvgR1m\n"
                 + "0vdXcDazv/wor3ElhVsT/h5/WrQ8\n"
                 + "-----END CERTIFICATE-----\n";
+
+        String tongguan = "-----BEGIN CERTIFICATE-----\n" +
+                "MIIDxzCCAq+gAwIBAgIJANQeF2dWg9WEMA0GCSqGSIb3DQEBBQUAMHoxCzAJBgNV\n" +
+                "BAYTAklOMQswCQYDVQQIDAJLQTEMMAoGA1UEBwwDQkFOMQ8wDQYDVQQKDAZORVdO\n" +
+                "RVQxDDAKBgNVBAsMA05TVDEPMA0GA1UEAwwGdGVzdGFnMSAwHgYJKoZIhvcNAQkB\n" +
+                "FhF0ZXN0YWdAbmV3bmV0LmNvbTAeFw0xNTA5MjIwNjU1MTNaFw0xODA5MjEwNjU1\n" +
+                "MTNaMHoxCzAJBgNVBAYTAklOMQswCQYDVQQIDAJLQTEMMAoGA1UEBwwDQkFOMQ8w\n" +
+                "DQYDVQQKDAZORVdORVQxDDAKBgNVBAsMA05TVDEPMA0GA1UEAwwGdGVzdGFnMSAw\n" +
+                "HgYJKoZIhvcNAQkBFhF0ZXN0YWdAbmV3bmV0LmNvbTCCASIwDQYJKoZIhvcNAQEB\n" +
+                "BQADggEPADCCAQoCggEBAMMdsjZZI//rruZ4KS2/EYxBel4USSQABLoxlkr0r92s\n" +
+                "ZqQFeR+poZwedYyv/prQ5TKqYpjfSsiRLgmBc/kbzLK1dYR0KoKvXcnlnNckqkFZ\n" +
+                "OUdONM2R+g4YA5yiPnM3jAh6056a+yK+I2k2JIrI/CORT60QduzqXAWZ6lG6d2GQ\n" +
+                "BkNRzjOmKpIEQObnRWZAy+9pPmHeqcrsd0RC6v8zPl5XFrA2UeM9gw0eNXUY+gwb\n" +
+                "sRLfuYLDejwbmKlb6PtCxrIckIHU5WgFdrqb2WNdU1cwIYaMGLhgNeZgJicwznuh\n" +
+                "8wxMXaOPUB71dCSg3syzIMbHgW7PSZ8+ri15pObVotMCAwEAAaNQME4wHQYDVR0O\n" +
+                "BBYEFCKN3/HDTmkrQFhqt/3QcBoJ/2W8MB8GA1UdIwQYMBaAFCKN3/HDTmkrQFhq\n" +
+                "t/3QcBoJ/2W8MAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADggEBABYt2GJ5\n" +
+                "P0HtCfKj4E3dtk/L9OzzDHmp7TDt1265JPpJ7DfF8we9HG+ZNFETJvlar07pP0vy\n" +
+                "t4/w6Q1KfA8p52Y9BSRvZltoW+SfUNRD96cHm2O77HKeiYcWOHB9CqxUqPsTv8xJ\n" +
+                "GNd/i9Xw2lcbXEQeaCkOLfdCo2ZVcTReNW9gazTAg4ED+sbQWySMViJwEyhGDpPT\n" +
+                "Zuu/Sip6Sux2th+s/PSMQFkFmK6Pt/NcL4HUzi51y49r1sxb8ME2kZ4JQq+qMKzn\n" +
+                "X7kkLE7ECdK2bc8R7rMQ7vttxHeFuyW+P687bD8bGPa/lppZrQ5c/lkVEKm8l7Nc\n" +
+                "witOy/5bPeoxTPE=\n" +
+                "-----END CERTIFICATE-----\n";
 //        InputStream inputStream =
 //                new Buffer()
 //                        .writeUtf8(CER_SERVER_ZC)
@@ -230,8 +281,7 @@ public class CustomTrust {
 //                        .inputStream();
         InputStream inputStream =
                 new Buffer()
-                        .writeUtf8(CER_CLIENT_ZC)
-                        .writeUtf8(CER_SERVER_ZC)
+                        .writeUtf8(tongguan)
                         .inputStream();
 
 //        InputStream inputStream =

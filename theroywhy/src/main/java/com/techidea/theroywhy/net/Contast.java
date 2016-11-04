@@ -70,4 +70,7 @@ public class Contast {
     public static String URL_LOCALHOST_HTTPS_BOTH = "https://192.168.0.115:8443/";
     public static String URL_LOCALHOST = "http://192.168.0.115:8080/";
     public static String URL_GOOGLE = "https://www.google.com.hk/";
+
+
+
 }
