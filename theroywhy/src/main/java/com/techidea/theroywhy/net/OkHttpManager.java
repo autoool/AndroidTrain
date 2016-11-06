@@ -2,6 +2,8 @@ package com.techidea.theroywhy.net;
 
 import android.content.Context;
 
+import com.techidea.theroywhy.R;
+
 import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
@@ -78,12 +80,6 @@ public class OkHttpManager {
         String result = "";
         try {
             Request request = new Request.Builder()
-                    .addHeader("","")
-                    .addHeader("","")
-                    .addHeader("","")
-                    .addHeader("","")
-                    .addHeader("","")
-                    .addHeader("","")
                     .url(url)
                     .build();
 
@@ -92,6 +88,7 @@ public class OkHttpManager {
             result = response.body().string();
             System.out.println(TAG + " " + result);
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println(TAG + "Exception " + e.getMessage().toString());
             result = e.getMessage().toString();
         }
@@ -134,8 +131,8 @@ public class OkHttpManager {
             KeyManagerFactory keyManagerFactory;
             final TrustManagerFactory trustManagerFactory;
 
-            keyManagerFactory = KeyManagerFactory.getInstance(DEFAULT_KEY_MANAGER_TYPE);
-            trustManagerFactory = TrustManagerFactory.getInstance(DEFAULT_KEY_MANAGER_TYPE);
+            keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+            trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 
             keyManagerFactory.init(clientStore, clientPwd.toCharArray());
             trustManagerFactory.init(serverStore);
@@ -149,68 +146,14 @@ public class OkHttpManager {
                         + Arrays.toString(trustManagers));
             }
 
-//            CustomSSLSocketFactory customSSLSocketFactory = new CustomSSLSocketFactory(keyManagerFactory.getKeyManagers(),
-//                    trustManagerFactory.getTrustManagers(), new SecureRandom());
-            ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-                    .tlsVersions(TlsVersion.TLS_1_2)
-                    .cipherSuites(
-                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
-                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
-                            CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
-                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
-                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
-                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
-                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
-                            CipherSuite.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA,
-                            CipherSuite.TLS_ECDHE_RSA_WITH_RC4_128_SHA,
-                            CipherSuite.TLS_DHE_RSA_WITH_AES_128_CBC_SHA,
-                            CipherSuite.TLS_DHE_DSS_WITH_AES_128_CBC_SHA,
-                            CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA)
-                    .build();
+            /*
+            该方法不行
             okHttpsBothWayClient = new OkHttpClient.Builder()
-                    .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustManagers[0])
-//                    .hostnameVerifier(hostnameVerifier)
+                    .sslSocketFactory(sslContext.getSocketFactory(),(X509TrustManager)trustManagers[0])
+                    .build();*/
+            okHttpsBothWayClient = new OkHttpClient.Builder()
+                    .sslSocketFactory(sslContext.getSocketFactory())
                     .build();
-//            okHttpsOneWayClient = new OkHttpClient.Builder()
-//                    .sslSocketFactory(sslContext.getSocketFactory())
-//                    .build();
-
-
-//            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-//            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-//            keyStore.load(null);
-//            int index = 0;
-//            for (InputStream certificate : certificates) {
-//                String certificateAlias = Integer.toString(index++);
-//                keyStore.setCertificateEntry(certificateAlias, certificateFactory.generateCertificate(certificate));
-//
-//                try {
-//                    if (certificate != null)
-//                        certificate.close();
-//                } catch (IOException e) {
-//                }
-//            }
-//
-//            SSLContext sslContext = SSLContext.getInstance("TLS");
-//
-//            TrustManagerFactory trustManagerFactory =
-//                    TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-//
-//            KeyStore clientKeyStore = KeyStore.getInstance("BKS");
-//            clientKeyStore.load(context.getAssets().open("zchao_clientbks.bks"), "123456".toCharArray());
-//            KeyManagerFactory keyManagerFactory = KeyManagerFactory
-// .getInstance(KeyManagerFactory.getDefaultAlgorithm());
-//            keyManagerFactory.init(clientKeyStore, "123456".toCharArray());
-//
-//
-//            trustManagerFactory.init(keyStore);
-//            sslContext.init(keyManagerFactory.getKeyManagers(),
-// trustManagerFactory.getTrustManagers(),new SecureRandom());
-////            sslContext.init(null, trustManagerFactory.getTrustManagers(), new SecureRandom());
-//            okHttpsOneWayClient = new OkHttpClient.Builder().sslSocketFactory(sslContext.getSocketFactory())
-//                    .build();
-//            okHttpClient = new OkHttpClient.Builder().sslSocketFactory(null, sslContext.getSocketFactory())
-//                    .build();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -228,6 +171,7 @@ public class OkHttpManager {
         }
     };
 
+    //单向认证是可以的
     public void setONECertificates(InputStream... certificates) {
         try {
             CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
@@ -246,20 +190,24 @@ public class OkHttpManager {
             }
 
             SSLContext sslContext = SSLContext.getInstance("TLS");
-
             TrustManagerFactory trustManagerFactory =
                     TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-
             trustManagerFactory.init(keyStore);
-            sslContext.init
-                    (
-                            null,
-                            trustManagerFactory.getTrustManagers(),
-                            new SecureRandom()
-                    );
+
+            KeyStore clientKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            clientKeyStore.load(context.getResources().openRawResource(R.raw.zc_clientbks), "123456".toCharArray());
+            ;
+
+            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+            keyManagerFactory.init(clientKeyStore, "123456".toCharArray());
+
+
+            sslContext.init(
+                    keyManagerFactory.getKeyManagers(),
+                    trustManagerFactory.getTrustManagers(),
+                    new SecureRandom());
             okHttpsOneWayClient = new OkHttpClient.Builder()
                     .sslSocketFactory(sslContext.getSocketFactory())
-                    .hostnameVerifier(hostnameVerifier)
                     .build();
         } catch (Exception e) {
             e.printStackTrace();

@@ -81,6 +81,7 @@ public class VolleyManager {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
+                        volleyError.printStackTrace();
                         System.out.println(volleyError.getMessage().toString());
                         response = volleyError.getMessage().toString();
                     }
@@ -96,9 +97,9 @@ public class VolleyManager {
         InputStream trustInputStream = null;
         String trustStorePassword = "";
         try {
-            keyInputStream = context.getResources().openRawResource(R.raw.zchao_clientbks);
+            keyInputStream = context.getResources().openRawResource(R.raw.zc_clientbks);
             keyStorePassword = "123456";
-            trustInputStream = context.getResources().openRawResource(R.raw.zchao_serverbks);
+            trustInputStream = context.getResources().openRawResource(R.raw.zc_serverbks);
             trustStorePassword = "123456";
         } catch (Exception e) {
             throw new IllegalStateException("Failure initializing KeyStore", e);

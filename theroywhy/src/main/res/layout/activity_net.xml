@@ -113,6 +113,13 @@
             android:layout_weight="1"
             android:text="httpsvolley" />
 
+        <Button
+            android:id="@+id/buttonhttpscustom"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="httpssustom" />
+
     </LinearLayout>
 
     <Button

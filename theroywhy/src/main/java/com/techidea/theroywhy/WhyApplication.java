@@ -22,12 +22,12 @@ public class WhyApplication extends Application {
 
         try {
 
-            InputStream clientStream = getResources().openRawResource(R.raw.zchao_clientbks);
+            InputStream clientStream = getResources().openRawResource(R.raw.zc_clientbks);
             String clientPwd = "123456";
-            InputStream serverStream = getResources().openRawResource(R.raw.zchao_serverbks);
+            InputStream serverStream = getResources().openRawResource(R.raw.zc_serverbks);
             String serverPwd = "123456";
             OkHttpManager.getInstance().setContext(getApplicationContext()).
-                    setONECertificates(getResources().openRawResource(R.raw.zchao_servercer));
+                    setONECertificates(getResources().openRawResource(R.raw.zc_serverbks));
 
             OkHttpManager.getInstance().setContext(getApplicationContext())
                     .setBothCertificates(clientStream, clientPwd, serverStream, serverPwd);

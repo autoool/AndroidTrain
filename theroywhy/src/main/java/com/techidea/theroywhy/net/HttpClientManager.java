@@ -172,8 +172,8 @@ public class HttpClientManager {
     private HttpClient getHttpsClient() {
         if (null == httpClient) {
             try {
-                InputStream keyStream = context.getResources().openRawResource(R.raw.zchao_clientbks);
-                InputStream trustStream = context.getResources().openRawResource(R.raw.zchao_serverbks);
+                InputStream keyStream = context.getResources().openRawResource(R.raw.zc_clientbks);
+                InputStream trustStream = context.getResources().openRawResource(R.raw.zc_serverbks);
                 KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
                 trustStore.load(trustStream, "123456".toCharArray());
                 KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());

@@ -52,13 +52,6 @@ public class NetActivity extends Activity {
 
     @OnClick(R.id.buttonhttpclient)
     void buttonhttpclient() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String result = httpClientManager.httpsClientGet(Contast.URL_ALI_HTTPS);
-                sendMessage(result);
-            }
-        }).start();
     }
 
     @OnClick(R.id.buttonhttpsclient)
@@ -66,10 +59,21 @@ public class NetActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                new CustomTrust().run();
+                String result = httpClientManager.httpsClientGet(Contast.URL_ALI_HTTPS);
+                sendMessage(result);
             }
         }).start();
 
+    }
+
+    @OnClick(R.id.buttonhttpscustom)
+    void httpscustom(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new CustomTrust().run();
+            }
+        }).start();
     }
 
     @OnClick(R.id.buttonhttpsclientone)

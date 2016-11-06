@@ -72,5 +72,4 @@ public class Contast {
     public static String URL_GOOGLE = "https://www.google.com.hk/";
 
 
-
 }

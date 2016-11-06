@@ -106,7 +106,8 @@ public class CustomTrust {
         MediaType str = MediaType.parse("text/x-markdown; charset=utf-8");
         RequestBody requestBody = RequestBody.create(str, param);
         Request request = new Request.Builder()
-                .header("POST", "")
+                .header("POST", "/mjc/webtrans/VPB_lb HTTP/1.1")
+                .header("HOST:","202.101.25.188:20141")
                 .header("User-Agent:", "Donjin Http 0.1")
                 .header("Content-Type:", "x-ISO-TPDU/x-auth")
                 .header("Accept:", "*/*")
