@@ -1,4 +1,4 @@
-package com.techidea.theroywhy.net;
+package com.techidea.theroywhy.net.volley;
 
 import android.content.Context;
 
@@ -11,8 +11,8 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.techidea.theroywhy.R;
+import com.techidea.theroywhy.net.TLSSocketFactory;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyManagementException;
 import java.security.KeyStore;

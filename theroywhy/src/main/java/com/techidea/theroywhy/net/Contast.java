@@ -63,13 +63,17 @@ public class Contast {
             "XtzhXpy0tcGgKPYWJv8c\n" +
             "-----END CERTIFICATE-----";
 
+    public static String URL_IP="https://192.168.1.151:8443/";
+    public static String URL_LOCALHOST = "http://localhost:8080/";
+    public static String URL_ALI="https://www.barehuman.com:8443/";
+//    /greeting?name=User
+
     public static String URL_12306 = "https://kyfw.12306.cn/otn/";
     public static String URL_BING = "http://cn.bing.com/";
     public static String URL_BOTHWAY = "http://localhost:8080";
     public static String URL_LOCALHOST_HTTPS_ONE = "https://192.168.0.115:8443/";
     public static String URL_LOCALHOST_HTTPS_BOTH = "https://192.168.0.115:8443/";
-    public static String URL_LOCALHOST = "http://192.168.0.115:8080/";
-    public static String URL_GOOGLE = "https://www.google.com.hk/";
 
+    public static String URL_GOOGLE = "https://www.google.com.hk/";
 
 }

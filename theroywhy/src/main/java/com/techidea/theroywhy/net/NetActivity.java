@@ -7,6 +7,9 @@ import android.os.Message;
 import android.widget.TextView;
 
 import com.techidea.theroywhy.R;
+import com.techidea.theroywhy.net.httpclient.HttpClientManager;
+import com.techidea.theroywhy.net.volley.VolleyManager;
+import com.techidea.theroywhy.net.OkHttpsManager;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,7 +34,7 @@ public class NetActivity extends Activity {
 
     HttpClientManager httpClientManager;
     NetHandle netHandle;
-    OkHttpManager okHttpManager;
+    OkHttpsManager okHttpManager;
     VolleyManager volleyManager;
 
     @Override
@@ -41,7 +44,7 @@ public class NetActivity extends Activity {
         ButterKnife.bind(this);
         httpClientManager = new HttpClientManager(this);
         netHandle = new NetHandle();
-        okHttpManager = OkHttpManager.getInstance();
+        okHttpManager = OkHttpsManager.getInstance();
         volleyManager = new VolleyManager(getApplicationContext());
     }
 
@@ -59,8 +62,12 @@ public class NetActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String result = httpClientManager.httpsClientGet(Contast.URL_ALI_HTTPS);
-                sendMessage(result);
+                httpClientManager.httpClientGet(Contast.URL_GOOGLE, new HttpClientManager.ResponseCallBack() {
+                    @Override
+                    public void callBack(String response) {
+                        sendMessage(response);
+                    }
+                });
             }
         }).start();
 
@@ -78,7 +85,17 @@ public class NetActivity extends Activity {
 
     @OnClick(R.id.buttonhttpsclientone)
     void buttonhttpsclientone() {
-
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                httpClientManager.httpsSingleClientGet(Contast.URL_ALI, new HttpClientManager.ResponseCallBack() {
+                    @Override
+                    public void callBack(String response) {
+                        sendMessage(response);
+                    }
+                });
+            }
+        }).start();
     }
 
     @OnClick(R.id.buttonokhttp)
@@ -98,7 +115,7 @@ public class NetActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String result = okHttpManager.runHttpBothWay(Contast.URL_ALI_HTTPS);
+                String result = okHttpManager.runHttpBothWay(Contast.URL_GOOGLE);
                 sendMessage(result);
             }
         }).start();
@@ -109,7 +126,7 @@ public class NetActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String result = okHttpManager.runHttpOneWay(Contast.URL_ALI_HTTPS);
+                String result = okHttpManager.runHttpOneWay(Contast.URL_GOOGLE);
                 sendMessage(result);
             }
         }).start();
@@ -135,7 +152,7 @@ public class NetActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                volleyManager.requestGet(Contast.URL_ALI_HTTPS);
+                volleyManager.requestGet(Contast.URL_GOOGLE);
             }
         }).start();
     }
@@ -145,7 +162,7 @@ public class NetActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                volleyManager.requestHttpsGet(Contast.URL_ALI_HTTPS);
+                volleyManager.requestHttpsGet(Contast.URL_GOOGLE);
             }
         }).start();
     }

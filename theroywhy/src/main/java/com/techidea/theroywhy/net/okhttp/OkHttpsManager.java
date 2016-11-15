@@ -4,14 +4,12 @@ import android.content.Context;
 
 import com.techidea.theroywhy.R;
 
-import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.security.cert.CertificateFactory;
 import java.util.Arrays;
-import java.util.Collections;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -22,38 +20,35 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
-import okhttp3.CipherSuite;
-import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.TlsVersion;
 
 /**
  * Created by zchao on 2016/11/1.
  */
 
-public class OkHttpManager {
+public class OkHttpsManager {
 
-    private String TAG = "OkHttpManager";
+    private String TAG = "OkHttpsManager";
 
     private OkHttpClient okHttpsOneWayClient;
     private OkHttpClient okHttpsBothWayClient;
     private Context context;
 
-    private static OkHttpManager Instance;
+    private static OkHttpsManager Instance;
 
 
-    public OkHttpManager() {
+    public OkHttpsManager() {
     }
 
-    public static OkHttpManager getInstance() {
+    public static OkHttpsManager getInstance() {
         if (Instance == null)
-            Instance = new OkHttpManager();
+            Instance = new OkHttpsManager();
         return Instance;
     }
 
-    public OkHttpManager setContext(Context context) {
+    public OkHttpsManager setContext(Context context) {
         this.context = context;
         return Instance;
     }

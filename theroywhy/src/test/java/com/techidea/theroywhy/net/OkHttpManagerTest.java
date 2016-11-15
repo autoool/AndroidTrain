@@ -1,5 +1,6 @@
 package com.techidea.theroywhy.net;
 
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,7 +10,6 @@ import org.junit.Test;
 
 public class OkHttpManagerTest {
 
-    private OkHttpManager okHttpManager;
 
     @Before
     public void setup() {

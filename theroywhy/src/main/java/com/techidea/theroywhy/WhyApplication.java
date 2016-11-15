@@ -2,7 +2,8 @@ package com.techidea.theroywhy;
 
 import android.app.Application;
 
-import com.techidea.theroywhy.net.OkHttpManager;
+
+import com.techidea.theroywhy.net.OkHttpsManager;
 
 import java.io.InputStream;
 
@@ -26,10 +27,10 @@ public class WhyApplication extends Application {
             String clientPwd = "123456";
             InputStream serverStream = getResources().openRawResource(R.raw.zc_serverbks);
             String serverPwd = "123456";
-            OkHttpManager.getInstance().setContext(getApplicationContext()).
+            OkHttpsManager.getInstance().setContext(getApplicationContext()).
                     setONECertificates(getResources().openRawResource(R.raw.zc_serverbks));
 
-            OkHttpManager.getInstance().setContext(getApplicationContext())
+            OkHttpsManager.getInstance().setContext(getApplicationContext())
                     .setBothCertificates(clientStream, clientPwd, serverStream, serverPwd);
         } catch (Exception e) {
             e.printStackTrace();

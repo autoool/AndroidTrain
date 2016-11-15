@@ -1,5 +1,7 @@
 package com.techidea.theroywhy.net;
 
+import com.techidea.theroywhy.net.httpclient.HttpClientManager;
+
 import org.junit.Before;
 import org.junit.Test;
 

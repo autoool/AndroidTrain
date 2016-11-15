@@ -1,10 +1,12 @@
-package com.techidea.theroywhy.net;
+package com.techidea.theroywhy.net.httpclient;
 
 import android.content.Context;
 import android.net.SSLCertificateSocketFactory;
 import android.util.Log;
 
 import com.techidea.theroywhy.R;
+import com.techidea.theroywhy.net.SSLTrustSocketFactoryEx;
+import com.techidea.theroywhy.net.TLSSocketFactory;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -59,10 +61,16 @@ import javax.net.ssl.X509TrustManager;
 public class HttpClientManager {
 //    HttpClient
 
+    public interface ResponseCallBack {
+        void callBack(String response);
+    }
+
     private String TAG = "HttpClientManager";
     private HttpClient httpClient;
     private HttpParams httpParams;
     private Context context;
+    private ResponseCallBack responseCallBack;
+
 
     public HttpClientManager(Context context) {
         this.httpParams = new BasicHttpParams();
@@ -70,8 +78,10 @@ public class HttpClientManager {
     }
 
     //
-    public String httpClientGet(String url) {
+    public void httpClientGet(String url, ResponseCallBack responseCallBack) {
+        this.responseCallBack = responseCallBack;
         String result = "";
+        url = url + "/greeting?name=User";
         HttpGet httpGet = new HttpGet(url);
         try {
             HttpResponse httpResponse = getHttpClient().execute(httpGet);
@@ -85,34 +95,16 @@ public class HttpClientManager {
         }
         System.out.println(result);
         Log.v(TAG, result);
-        return result;
+        if (responseCallBack != null)
+            responseCallBack.callBack(result);
     }
 
-    public String httpClientPost(String url, List<NameValuePair> params) {
-        HttpPost httpPost = new HttpPost(url);
-        String result = "";
-        try {
-            httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-            HttpResponse httpResponse = httpClient.execute(httpPost);
-            if (httpResponse.getStatusLine().getStatusCode() == 200) {
-                result = EntityUtils.toString(httpResponse.getEntity());
-            } else {
-                result = "Error Response: " +
-                        httpResponse.getStatusLine().toString();
-            }
-        } catch (Exception e) {
-            result = e.getMessage().toString();
-        }
-        System.out.println(result);
-        Log.v(TAG, result);
-        return result;
-    }
-
-    public String httpsClientGet(String url) {
+    public void httpsSingleClientGet(String url, ResponseCallBack callBack) {
+        this.responseCallBack = callBack;
         String result = "";
         HttpPost httpGet = new HttpPost(url);
         try {
-            HttpResponse httpResponse = getHttpsClient()
+            HttpResponse httpResponse = getHttpsSingleClient()
                     .execute(httpGet);
             if (httpResponse.getStatusLine().getStatusCode() == 200) {
                 result = EntityUtils.toString(httpResponse.getEntity());
@@ -124,26 +116,29 @@ public class HttpClientManager {
         }
         System.out.println(result);
         Log.v(TAG, result);
-        return result;
+        if (responseCallBack != null)
+            responseCallBack.callBack(result);
     }
 
-    public void httpsClientPost(String url, List<NameValuePair> params) {
-        HttpPost httpPost = new HttpPost(url);
+    public void httpsBothClientGet(String url, ResponseCallBack callBack) {
+        this.responseCallBack = callBack;
         String result = "";
+        HttpPost httpGet = new HttpPost(url);
         try {
-            httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-            HttpResponse httpResponse = getHttpsClient().execute(httpPost);
+            HttpResponse httpResponse = getHttpsBothClient()
+                    .execute(httpGet);
             if (httpResponse.getStatusLine().getStatusCode() == 200) {
                 result = EntityUtils.toString(httpResponse.getEntity());
             } else {
-                result = "Error Response: " +
-                        httpResponse.getStatusLine().toString();
+                result = "Error Response" + httpResponse.getStatusLine().toString();
             }
         } catch (Exception e) {
             result = e.getMessage().toString();
         }
         System.out.println(result);
         Log.v(TAG, result);
+        if (responseCallBack != null)
+            responseCallBack.callBack(result);
     }
 
 
@@ -167,9 +162,34 @@ public class HttpClientManager {
         return httpClient;
     }
 
-    //https双向认证
+    private HttpClient getHttpsSingleClient() {
+        if (null == httpClient) {
+            try {
+                InputStream trustStream = context.getResources().openRawResource(R.raw.zc_serverbks);
+                KeyStore trustStore = KeyStore.getInstance("bks");
+                trustStore.load(trustStream, "123456".toCharArray());
+                SSLSocketFactory sslSocketFactory = new SSLTrustSocketFactoryEx(trustStore);
+                HttpParams params = new BasicHttpParams();
 
-    private HttpClient getHttpsClient() {
+                HttpProtocolParams.setUseExpectContinue(params, true);
+                ConnManagerParams.setTimeout(params, 10000);
+                HttpConnectionParams.setConnectionTimeout(params, 10000);
+                HttpConnectionParams.setSoTimeout(params, 10000);
+                SchemeRegistry schemeRegistry = new SchemeRegistry();
+                schemeRegistry.register(new Scheme("https", sslSocketFactory, 8443));
+                ClientConnectionManager clientConnectionManager = new ThreadSafeClientConnManager(params, schemeRegistry);
+                httpClient = new DefaultHttpClient(clientConnectionManager, params);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new DefaultHttpClient();
+            }
+        }
+        return httpClient;
+    }
+
+
+    //https双向认证
+    private HttpClient getHttpsBothClient() {
         if (null == httpClient) {
             try {
                 InputStream keyStream = context.getResources().openRawResource(R.raw.zc_clientbks);
@@ -187,10 +207,6 @@ public class HttpClientManager {
                 TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance("X509");
                 keyManagerFactory.init(keyStore, "123456".toCharArray());
                 trustManagerFactory.init(trustStore);
-                TLSSocketFactory tlsSocketFactory = new TLSSocketFactory(
-                        keyManagerFactory.getKeyManagers(),
-                        trustManagerFactory.getTrustManagers(),
-                        new SecureRandom());
 
                 HttpParams params = new BasicHttpParams();
                 HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
@@ -209,48 +225,5 @@ public class HttpClientManager {
             }
         }
         return httpClient;
-    }
-
-    private HttpClient getHttpsBothWayClient() {
-        httpClient = new DefaultHttpClient();
-        return httpClient;
-    }
-
-    private class SSLSocketFactoryEx extends SSLSocketFactory {
-        SSLContext sslContext = SSLContext.getInstance("TLS");
-
-        public SSLSocketFactoryEx(KeyStore keyStore)
-                throws NoSuchAlgorithmException, KeyManagementException,
-                KeyStoreException, UnrecoverableKeyException {
-            super(keyStore);
-
-            TrustManager trustManager = new X509TrustManager() {
-                @Override
-                public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-
-                }
-
-                @Override
-                public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-
-                }
-
-                @Override
-                public X509Certificate[] getAcceptedIssuers() {
-                    return null;
-                }
-            };
-            sslContext.init(null, new TrustManager[]{trustManager}, null);
-        }
-
-        @Override
-        public Socket createSocket() throws IOException {
-            return sslContext.getSocketFactory().createSocket();
-        }
-
-        @Override
-        public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException {
-            return sslContext.getSocketFactory().createSocket(socket, host, port, autoClose);
-        }
     }
 }

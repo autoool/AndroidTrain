@@ -1,4 +1,4 @@
-package com.techidea.theroywhy.net;
+package com.techidea.theroywhy.net.httpurl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
