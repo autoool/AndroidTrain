@@ -22,50 +22,54 @@ public class Contast {
             "-----END CERTIFICATE-----";
 
     public static String CER_SERVER_ZC = "-----BEGIN CERTIFICATE-----\n" +
-            "MIIDTTCCAjWgAwIBAgIEf67gmjANBgkqhkiG9w0BAQsFADBXMQswCQYDVQQGEwJj\n" +
-            "bjELMAkGA1UECBMCc2gxCzAJBgNVBAcTAnNoMQ4wDAYDVQQKEwV6aGFuZzEOMAwG\n" +
-            "A1UECxMFemhhbmcxDjAMBgNVBAMTBXpoYW5nMB4XDTE2MTEwMjAzMTYyMloXDTI2\n" +
-            "MDkxMTAzMTYyMlowVzELMAkGA1UEBhMCY24xCzAJBgNVBAgTAnNoMQswCQYDVQQH\n" +
-            "EwJzaDEOMAwGA1UEChMFemhhbmcxDjAMBgNVBAsTBXpoYW5nMQ4wDAYDVQQDEwV6\n" +
-            "aGFuZzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMGZoFVMlGUQLow7\n" +
-            "XSX0ntwoy53Tg5VuGCgHU5TOsOiHswLInHXPrPprjdkfEavTSYdoCSBloDOdyDMM\n" +
-            "aY093dIsmIx2oA/e608b/xF655jd25QC3zqdTi0cArNnY9d6mStn26XcG4Hul3y+\n" +
-            "e+VYa9K60+BBAWKMBwhlFx1bb/sHfInPF+9AK0VUnjbrWbDOmRjSRRYILCiyLVpo\n" +
-            "t3YiR0GofBMe7xGXIOknTOfmQPnsT6N9sbUivV2qHmr1xUeR2m3fUDxqUyteJmWP\n" +
-            "7UH47LETeoYq97EW7eQOjDR+ARlzd1x4HA01Rw2KrPHAYvpcEskZdR2rCLopmCmy\n" +
-            "HXS7E0kCAwEAAaMhMB8wHQYDVR0OBBYEFAifYms7n5CxQNOJmejQeQla4iJeMA0G\n" +
-            "CSqGSIb3DQEBCwUAA4IBAQBEayaS0GvqC7NqfA880f/V7Lq5g8h8Gm2LwCYuOVRQ\n" +
-            "/M2DMAuRxVJhH7Dy6PZaYHIEEeeP0lrII4Raryym5TRSaNze51EfDWOpg6VBzNnU\n" +
-            "IoxpPFPA7PI06P6YCxtElEjplFbGYX2poWyFSp6gGVtlXeXOo9gO39KhXvyGD+HX\n" +
-            "jHNnDM3z3umnxAwe5JQQCBcFBiW4xjthVIWWkhJkwnUgsOmmiBG0XaZzirjnEmse\n" +
-            "Y7BBQc/ysJUUdtZ6VXMHgjO94DlcFh7K0Pc0ciuZ4v+Qu0rasXzy8czx4P3RWttB\n" +
-            "V6JgBFIEf09R0OrP3bidU4cLXDeLV8CVMCgKaCF8zVzj\n" +
-            "-----END CERTIFICATE-----";
+            "MIIDlTCCAn2gAwIBAgIEdpuUfzANBgkqhkiG9w0BAQsFADB7MQswCQYDVQQGEwJj\n" +
+            "bjELMAkGA1UECBMCc2gxCzAJBgNVBAcTAnNoMRowGAYDVQQKExF3d3cuYmFyZWh1\n" +
+            "bWFuLmNvbTEaMBgGA1UECxMRd3d3LmJhcmVodW1hbi5jb20xGjAYBgNVBAMTEXd3\n" +
+            "dy5iYXJlaHVtYW4uY29tMB4XDTE2MTEwNTAzNTkzMVoXDTI2MDkxNDAzNTkzMVow\n" +
+            "ezELMAkGA1UEBhMCY24xCzAJBgNVBAgTAnNoMQswCQYDVQQHEwJzaDEaMBgGA1UE\n" +
+            "ChMRd3d3LmJhcmVodW1hbi5jb20xGjAYBgNVBAsTEXd3dy5iYXJlaHVtYW4uY29t\n" +
+            "MRowGAYDVQQDExF3d3cuYmFyZWh1bWFuLmNvbTCCASIwDQYJKoZIhvcNAQEBBQAD\n" +
+            "ggEPADCCAQoCggEBAOVB8LeG+vminIXNH7zBshHduomWJWjtkt3xVn4XS6QO8jLk\n" +
+            "thwQIzKG/tM1kTOFpl3Lap0oKb6vUzNxpNwbucaMLZQGToIGG7TyjnHqGGNQJl+s\n" +
+            "CbyFhGleWVjQYIvzSeT9CfKZf6avpdJg36797k/7HZ/DF/rqY4dZFfb/YlqwbKNq\n" +
+            "JdY36W8/VA/vgKD6xucEt+wztgBq9fjpAWU/v5OpqUfae+ogWMfT/lRpNPNaAZSh\n" +
+            "DhwdlPGddCn3EtTSl0xlx3wtZAbi76umNPjmLD/TAIQPkD8jdVpiB/vRpkAd4usP\n" +
+            "WAg3o+GS4zuEfvIEF5WPcYuTML6kTM6k+4pltLcCAwEAAaMhMB8wHQYDVR0OBBYE\n" +
+            "FBtuS7qIHnb8CtjfcG3FaGJ6TwnyMA0GCSqGSIb3DQEBCwUAA4IBAQBH12EW0xlN\n" +
+            "wYtthlf3YjmUH0Jbps19zzScRiIN9/Iucj9NHXH8D3iwNJvL9+QULxym6ZYa1QgG\n" +
+            "vYCZ0fEcpUue6t7qgzBmap8hFhWo6aChbLrqe52Lek/WsYzPpjEDfmIfcUAk/p3u\n" +
+            "mCJUtY0x/8HZ3mAb73TGIvE1Kevjv4tsFmcg16rmnB4fK1zchxqIydkwlQGT6Zok\n" +
+            "8HgnRSL/KqyIfz05tTZm/CEL44KYcbebxE0eKxfoCKtfSyJtBwHKVyJKBXU4x+pZ\n" +
+            "SizjISnWQy6ngNyGYjOvdmF0wnGdIeABVwco4saFLHGpwdJLGDJuvFQSQ1Aon520\n" +
+            "JNtPBkwU+r90\n" +
+            "-----END CERTIFICATE-----\n";
 
     public static String CER_CLIENT_ZC = "-----BEGIN CERTIFICATE-----\n" +
-            "MIIDOzCCAiOgAwIBAgIEFFzMJzANBgkqhkiG9w0BAQsFADBOMQswCQYDVQQGEwJj\n" +
-            "bjELMAkGA1UECBMCc2gxCzAJBgNVBAcTAnNoMQswCQYDVQQKEwJ6YzELMAkGA1UE\n" +
-            "CxMCemMxCzAJBgNVBAMTAnpjMB4XDTE2MTEwMzAzMTAzMVoXDTI2MDkxMjAzMTAz\n" +
-            "MVowTjELMAkGA1UEBhMCY24xCzAJBgNVBAgTAnNoMQswCQYDVQQHEwJzaDELMAkG\n" +
-            "A1UEChMCemMxCzAJBgNVBAsTAnpjMQswCQYDVQQDEwJ6YzCCASIwDQYJKoZIhvcN\n" +
-            "AQEBBQADggEPADCCAQoCggEBAMe6/rlUMq71NFeS77wHoUUysgtTjr3pm/Oeu8n5\n" +
-            "LlIv5OVeTeRMIsybukpuHM3OY2iWAPtYH8xhqRZzUMXydX5/j7TZ613XHlD8gxfv\n" +
-            "sZmm50kTzSTbCQeZoQ5NsHTQD5H8gx//bC9PMes4eHirwld7Ez6wfXtDsk3hCZck\n" +
-            "Csm4ap1+314pre01IjJQareLsGZCKlz7lwAIBVvHZSeo6IDzSvpnl0LKEKSrJsVb\n" +
-            "dVj+Qzz5jNILVvLQyPdNpM3ZoHcTLrTdaG8cgI7uxzZ2sMwrOpHlvJLMHhY0E6BA\n" +
-            "Iavy0HXAdUGNMOxamQDF8VVFQ1+iBSkV7+OKIj/vG9OLhy0CAwEAAaMhMB8wHQYD\n" +
-            "VR0OBBYEFLra7tm6eNSp8yOvfgrhQhlllW0IMA0GCSqGSIb3DQEBCwUAA4IBAQAr\n" +
-            "tRTaIesJ/2e+dvc4lTFL5KVcV66e7t1+WIiFtbGjemeU0JHcVu7NC6NN3bf1C3AL\n" +
-            "S1qnxEnsyvZSw3YsfFXmAqVX3umcbzzoyXeX2nuGr7LyQrxLE3aY3TI+m9l/idgl\n" +
-            "2feHtFfoNTbowhV7eiWWe/GCe2tt8TU8Rx5vtxM99z13ooiZOjs7gqFvGoIdgwMJ\n" +
-            "46xj3RQpmhTwOSPX0PmYbx16A3cFmd2Z3rC/xCwECV8P5SAld3LnTVnEsuQXpz/O\n" +
-            "6XRd9U0MoNeXE4pZAF9y80s46RUGVaUovRfcHCvmnC68e/kWY3P0argEZ8N3aU+5\n" +
-            "XtzhXpy0tcGgKPYWJv8c\n" +
-            "-----END CERTIFICATE-----";
+            "MIIDlTCCAn2gAwIBAgIEQOJ3AzANBgkqhkiG9w0BAQsFADB7MQswCQYDVQQGEwJj\n" +
+            "bjELMAkGA1UECBMCc2gxCzAJBgNVBAcTAnNoMRowGAYDVQQKExF3d3cuYmFyZWh1\n" +
+            "bWFuLmNvbTEaMBgGA1UECxMRd3d3LmJhcmVodW1hbi5jb20xGjAYBgNVBAMTEXd3\n" +
+            "dy5iYXJlaHVtYW4uY29tMB4XDTE2MTEwNTA0MDA1MloXDTI2MDkxNDA0MDA1Mlow\n" +
+            "ezELMAkGA1UEBhMCY24xCzAJBgNVBAgTAnNoMQswCQYDVQQHEwJzaDEaMBgGA1UE\n" +
+            "ChMRd3d3LmJhcmVodW1hbi5jb20xGjAYBgNVBAsTEXd3dy5iYXJlaHVtYW4uY29t\n" +
+            "MRowGAYDVQQDExF3d3cuYmFyZWh1bWFuLmNvbTCCASIwDQYJKoZIhvcNAQEBBQAD\n" +
+            "ggEPADCCAQoCggEBAMbHNZPh0D1Zj7fRid6QB4SYbFb/kO8TJcr8n6Vojskx2CBZ\n" +
+            "FSad6ZLx/I9T1oemLYYkJa6ojlY6JYqPImdhd+2mCbaQ5awnZsLPQQaDJbGrmV50\n" +
+            "oijHkfULVg/TiFR0Af16e3EETEUVpVOCA3UO87S7u7a+pcmtiqrHjtc/jT/JeM6z\n" +
+            "pS2DCuzMR4XxyU4Mr+PRnGby/xRiTDT79N1cF8wsv4xt+0xSUAZ5tTwfanx2udpW\n" +
+            "Zcl4zW3gcb5VknLRJlwxTDyyhLgHSGP/U9dqjK+r3siB9Fo2AJ4oVoNHoo4biNzR\n" +
+            "Qblrl4eyXhRc6mPFNe7wAAi0kxtVZrA15jfkEFcCAwEAAaMhMB8wHQYDVR0OBBYE\n" +
+            "FKmIjcNSjfuuefSo76QtJzeY7WMuMA0GCSqGSIb3DQEBCwUAA4IBAQBIndfeP5g9\n" +
+            "GPdbe2g5suHRzy6nbVchaAn8Gsvhk3c1LUzouWDBbXL29eUEcx3WxotDU71WUvDp\n" +
+            "U7QE2cpLu9oRBKsG5/0QECs/Hea5ENLRXlS/oWxODmzh2opImq4MlFA/mDRBLllH\n" +
+            "kxvW0vPyRq0NehF+qHvxOavTMuqY5U+44LGmkp0naZQZV+vPqkvnsLTIgVOVqDPY\n" +
+            "eCCHJzZhjoM6BBJPbx0InpkD5hUND76tkqZGqZNCcK8ECGbt38OcAKxAANbHSm3O\n" +
+            "ugeDtomXvgicJAiCvbgs0jP5KymUANdt4yaaMcqT/uUuUHSBbVukGriY5cm88QaK\n" +
+            "hZSLXNFykTJ3\n" +
+            "-----END CERTIFICATE-----\n";
 
-    public static String URL_IP="https://192.168.1.151:8443/";
+    public static String URL_IP = "https://192.168.1.151:8443/";
     public static String URL_LOCALHOST = "http://localhost:8080/";
-    public static String URL_ALI="https://www.barehuman.com:8443/";
+    public static String URL_ALI = "https://www.barehuman.com:8443/";
 //    /greeting?name=User
 
     public static String URL_12306 = "https://kyfw.12306.cn/otn/";
@@ -75,5 +79,14 @@ public class Contast {
     public static String URL_LOCALHOST_HTTPS_BOTH = "https://192.168.0.115:8443/";
 
     public static String URL_GOOGLE = "https://www.google.com.hk/";
+
+    public static String mtms = "com.newland.pospp.mtms.client.n900";
+
+    public static String dggf = "com.newland.dggf";
+
+    public static String launcher = "com.android.launcher";
+
+
+
 
 }

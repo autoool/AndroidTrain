@@ -1,21 +1,21 @@
-package com.techidea.theroywhy.net;
+package com.techidea.theroywhy.net.okhttp;
 
 import android.content.Context;
 
-import com.techidea.theroywhy.R;
+import com.techidea.theroywhy.net.CustomSSLSocketFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.SecureRandom;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.util.Arrays;
+import java.util.Collection;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
@@ -102,15 +102,50 @@ public class OkHttpsManager {
             result = response.body().string();
             System.out.println(TAG + " " + result);
         } catch (IOException e) {
-            System.out.println(TAG + "Exception " + e.getMessage().toString());
+            System.out.println(TAG + "Exception " + e.getMessage());
         }
         return result;
     }
 
 
+    //单向认证是可以的
+    public void setONECertificates(InputStream... certificates) {
+        try {
+            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            keyStore.load(null);
+            int index = 0;
+            for (InputStream certificate : certificates) {
+                String certificateAlias = Integer.toString(index++);
+                keyStore.setCertificateEntry(certificateAlias, certificateFactory.generateCertificate(certificate));
+
+                try {
+                    if (certificate != null)
+                        certificate.close();
+                } catch (IOException e) {
+                }
+            }
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            TrustManagerFactory trustManagerFactory =
+                    TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustManagerFactory.init(keyStore);
+
+            sslContext.init(
+                    null,
+                    trustManagerFactory.getTrustManagers(),
+                    new SecureRandom());
+            okHttpsOneWayClient = new OkHttpClient.Builder()
+                    .sslSocketFactory(sslContext.getSocketFactory())
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void setBothCertificates(InputStream clientStream, String clientPwd,
                                     InputStream serverStream, String serverPwd) {
-//trust server
         KeyStore clientStore;
         KeyStore serverStore;
         final String DEFAULT_KEY_TYPE = "BKS";
@@ -141,11 +176,6 @@ public class OkHttpsManager {
                         + Arrays.toString(trustManagers));
             }
 
-            /*
-            该方法不行
-            okHttpsBothWayClient = new OkHttpClient.Builder()
-                    .sslSocketFactory(sslContext.getSocketFactory(),(X509TrustManager)trustManagers[0])
-                    .build();*/
             okHttpsBothWayClient = new OkHttpClient.Builder()
                     .sslSocketFactory(sslContext.getSocketFactory())
                     .build();
@@ -154,110 +184,6 @@ public class OkHttpsManager {
         }
 
     }
-
-    //单项认证增加verify
-    HostnameVerifier hostnameVerifier = new HostnameVerifier() {
-        @Override
-        public boolean verify(String hostname, SSLSession session) {
-            HostnameVerifier hv =
-                    HttpsURLConnection.getDefaultHostnameVerifier();
-//            return hv.verify("https://www.barehuman.com", session);
-            return true;
-        }
-    };
-
-    //单向认证是可以的
-    public void setONECertificates(InputStream... certificates) {
-        try {
-            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-            keyStore.load(null);
-            int index = 0;
-            for (InputStream certificate : certificates) {
-                String certificateAlias = Integer.toString(index++);
-                keyStore.setCertificateEntry(certificateAlias, certificateFactory.generateCertificate(certificate));
-
-                try {
-                    if (certificate != null)
-                        certificate.close();
-                } catch (IOException e) {
-                }
-            }
-
-            SSLContext sslContext = SSLContext.getInstance("TLS");
-            TrustManagerFactory trustManagerFactory =
-                    TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-            trustManagerFactory.init(keyStore);
-
-            KeyStore clientKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-            clientKeyStore.load(context.getResources().openRawResource(R.raw.zc_clientbks), "123456".toCharArray());
-            ;
-
-            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-            keyManagerFactory.init(clientKeyStore, "123456".toCharArray());
-
-
-            sslContext.init(
-                    keyManagerFactory.getKeyManagers(),
-                    trustManagerFactory.getTrustManagers(),
-                    new SecureRandom());
-            okHttpsOneWayClient = new OkHttpClient.Builder()
-                    .sslSocketFactory(sslContext.getSocketFactory())
-                    .build();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-  /*  public void setBothWayCertificates(InputStream... certificates) {
-        try {
-            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-            KeyStore serverKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-            serverKeyStore.load(null);
-            int index = 0;
-            for (InputStream certificate : certificates) {
-                String certificateAlias = Integer.toString(index++);
-                serverKeyStore.setCertificateEntry(certificateAlias, certificateFactory.generateCertificate(certificate));
-
-                try {
-                    if (certificate != null)
-                        certificate.close();
-                } catch (IOException e) {
-                }
-            }
-
-
-            SSLContext sslContext = SSLContext.getInstance("TLS");
-
-            TrustManagerFactory trustManagerFactory =
-                    TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-            trustManagerFactory.init(serverKeyStore);
-
-            //初始化keystore
-            KeyStore clientKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-            clientKeyStore.load(context.getAssets().open("zhy_client.bks"), "123456".toCharArray());
-
-            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-            keyManagerFactory.init(clientKeyStore, "123456".toCharArray());
-
-            TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
-            if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
-                throw new IllegalStateException("Unexpected default trust managers:"
-                        + Arrays.toString(trustManagers));
-            }
-
-            sslContext.init(keyManagerFactory.getKeyManagers(),
-                    trustManagerFactory.getTrustManagers(),
-                    new SecureRandom());
-            okHttpsBothWayClient = new OkHttpClient.Builder()
-                    .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustManagers[0])
-                    .build();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }*/
 
     //单向认证
     public OkHttpClient getOkHttpsOneWayClient() {
@@ -272,5 +198,50 @@ public class OkHttpsManager {
     public OkHttpClient getOkHttpClient() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
         return okHttpClient;
+    }
+
+    private X509TrustManager trustManagerForCertificates(InputStream in)
+            throws GeneralSecurityException {
+        CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+        Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(in);
+        if (certificates.isEmpty()) {
+            throw new IllegalArgumentException("expected non-empty set of trusted certificates");
+        }
+
+        // Put the certificates a key store.
+        char[] password = "123456".toCharArray();
+        KeyStore keyStore = newEmptyKeyStore(password);
+        int index = 0;
+        for (Certificate certificate : certificates) {
+            String certificateAlias = Integer.toString(index++);
+            keyStore.setCertificateEntry(certificateAlias, certificate);
+        }
+
+        // Use it to build an X509 trust manager.
+        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(
+                KeyManagerFactory.getDefaultAlgorithm());
+        keyManagerFactory.init(keyStore, password);
+
+        TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
+                TrustManagerFactory.getDefaultAlgorithm());
+        trustManagerFactory.init(keyStore);
+
+        TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+        if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
+            throw new IllegalStateException("Unexpected default trust managers:"
+                    + Arrays.toString(trustManagers));
+        }
+        return (X509TrustManager) trustManagers[0];
+    }
+
+    private KeyStore newEmptyKeyStore(char[] password) throws GeneralSecurityException {
+        try {
+            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            InputStream in = null; // By convention, 'null' creates an empty key store.
+            keyStore.load(in, password);
+            return keyStore;
+        } catch (IOException e) {
+            throw new AssertionError(e);
+        }
     }
 }

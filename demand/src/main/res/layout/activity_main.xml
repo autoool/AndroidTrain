@@ -34,4 +34,18 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:weightSum="3"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+        <Button
+            android:id="@+id/button_swipmenu"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:text="swipmenu"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+
 </RelativeLayout>

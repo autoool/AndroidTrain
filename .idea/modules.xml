@@ -10,6 +10,7 @@
       <module fileurl="file://$PROJECT_DIR$/coordinator/coordinator.iml" filepath="$PROJECT_DIR$/coordinator/coordinator.iml" />
       <module fileurl="file://$PROJECT_DIR$/demand/demand.iml" filepath="$PROJECT_DIR$/demand/demand.iml" />
       <module fileurl="file://$PROJECT_DIR$/myapplication/myapplication.iml" filepath="$PROJECT_DIR$/myapplication/myapplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/swipwmenulistview/swipwmenulistview.iml" filepath="$PROJECT_DIR$/swipwmenulistview/swipwmenulistview.iml" />
       <module fileurl="file://$PROJECT_DIR$/theroywhy/theroywhy.iml" filepath="$PROJECT_DIR$/theroywhy/theroywhy.iml" />
       <module fileurl="file://$PROJECT_DIR$/timelog/timelog.iml" filepath="$PROJECT_DIR$/timelog/timelog.iml" />
     </modules>

@@ -7,6 +7,10 @@ android {
     compileSdkVersion 24
     buildToolsVersion "24.0.2"
 
+    lintOptions {
+        abortOnError false
+    }
+
     defaultConfig {
         applicationId "com.techidea.theroywhy"
         minSdkVersion 16

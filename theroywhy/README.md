@@ -5,3 +5,6 @@ com.techidea.theroywhy.customview
 com.techidea.theroywhy.customgroupview
 
 ### 原理部分
+
+### https认证
+com.techidea.theroywhy.net

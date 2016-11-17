@@ -55,6 +55,7 @@ public class SSLTrustSocketFactoryEx extends SSLSocketFactory {
             sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, new TrustManager[]{new SSLTrustAllManager()},
                     null);
+//            setHostnameVerifier(ALLOW_ALL_HOSTNAME_VERIFIER);
         } catch (Exception ex) {
         }
     }

@@ -1,18 +1,16 @@
 package com.techidea.theroywhy.net.httpclient;
 
 import android.content.Context;
-import android.net.SSLCertificateSocketFactory;
 import android.util.Log;
 
 import com.techidea.theroywhy.R;
+import com.techidea.theroywhy.net.Contast;
 import com.techidea.theroywhy.net.SSLTrustSocketFactoryEx;
-import com.techidea.theroywhy.net.TLSSocketFactory;
+import com.techidea.theroywhy.net.interf.ResponseCallBack;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.params.HttpClientParams;
@@ -22,7 +20,7 @@ import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -33,19 +31,13 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.security.KeyManagementException;
+import java.security.GeneralSecurityException;
 import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Collection;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -53,17 +45,14 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import okio.Buffer;
+
 
 /**
  * Created by zchao on 2016/11/2.
  */
 
 public class HttpClientManager {
-//    HttpClient
-
-    public interface ResponseCallBack {
-        void callBack(String response);
-    }
 
     private String TAG = "HttpClientManager";
     private HttpClient httpClient;
@@ -104,7 +93,7 @@ public class HttpClientManager {
         String result = "";
         HttpPost httpGet = new HttpPost(url);
         try {
-            HttpResponse httpResponse = getHttpsSingleClient()
+            HttpResponse httpResponse = getHttpsSingleStrClient(new Buffer().writeUtf8(Contast.CER_SERVER_ZC).inputStream())
                     .execute(httpGet);
             if (httpResponse.getStatusLine().getStatusCode() == 200) {
                 result = EntityUtils.toString(httpResponse.getEntity());
@@ -143,42 +132,51 @@ public class HttpClientManager {
 
 
     private HttpClient getHttpClient() {
-
-//        设置连接超时和 Socket 超时，以及 Socket 缓存大小
-        HttpConnectionParams.setConnectionTimeout(httpParams, 30 * 1000);
-        HttpConnectionParams.setSoTimeout(httpParams, 20 * 1000);
-        HttpConnectionParams.setSocketBufferSize(httpParams, 8192);
-        //设置重定向，缺省为 true
-        HttpClientParams.setRedirecting(httpParams, true);
-        //user agent
-        String userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2) Gecko/20100115 Firefox/3.6";
-        HttpProtocolParams.setUserAgent(httpParams, userAgent);
-        SchemeRegistry schReg = new SchemeRegistry();
-        schReg.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-//        schReg.register(new Scheme("https", SSLSocketFactory.getSocketFactory(), 443));
-        ClientConnectionManager connMgr = new ThreadSafeClientConnManager(httpParams, schReg);
-//        httpClient = new DefaultHttpClient();
-        httpClient = new DefaultHttpClient(connMgr, httpParams);
+        httpClient = new DefaultHttpClient();
         return httpClient;
     }
 
-    private HttpClient getHttpsSingleClient() {
+    private HttpClient getHttpsSingleBksClient() {
         if (null == httpClient) {
             try {
                 InputStream trustStream = context.getResources().openRawResource(R.raw.zc_serverbks);
                 KeyStore trustStore = KeyStore.getInstance("bks");
                 trustStore.load(trustStream, "123456".toCharArray());
                 SSLSocketFactory sslSocketFactory = new SSLTrustSocketFactoryEx(trustStore);
-                HttpParams params = new BasicHttpParams();
+                httpClient = new DefaultHttpClient();
+                httpClient.getConnectionManager().getSchemeRegistry()
+                        .register(new Scheme("https", sslSocketFactory, 8443));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new DefaultHttpClient();
+            }
+        }
+        return httpClient;
+    }
 
-                HttpProtocolParams.setUseExpectContinue(params, true);
-                ConnManagerParams.setTimeout(params, 10000);
-                HttpConnectionParams.setConnectionTimeout(params, 10000);
-                HttpConnectionParams.setSoTimeout(params, 10000);
-                SchemeRegistry schemeRegistry = new SchemeRegistry();
-                schemeRegistry.register(new Scheme("https", sslSocketFactory, 8443));
-                ClientConnectionManager clientConnectionManager = new ThreadSafeClientConnManager(params, schemeRegistry);
-                httpClient = new DefaultHttpClient(clientConnectionManager, params);
+    private HttpClient getHttpsSingleStrClient(InputStream... certificates) {
+        if (null == httpClient) {
+            try {
+
+                SSLContext sslContext = SSLContext.getInstance("TLS");
+                X509TrustManager x509TrustManager;
+                try {
+                    x509TrustManager = trustManagerForCertificates(
+                            new Buffer().writeUtf8(Contast.CER_SERVER_ZC).inputStream());
+                    sslContext.init(null, new TrustManager[]{x509TrustManager}, new SecureRandom());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                InputStream trustStream = new Buffer().writeUtf8(Contast.CER_SERVER_ZC).inputStream();
+                KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+                trustStore.load(trustStream, "123456".toCharArray());
+//                SSLSocketFactory sslSocketFactory = new SSLTrustSocketFactoryEx(trustStore);
+                SSLSocketFactory sslSocketFactory = new SSLSocketFactory(null, "123456", trustStore);
+
+                httpClient = new DefaultHttpClient();
+                httpClient.getConnectionManager().getSchemeRegistry()
+                        .register(new Scheme("https", sslSocketFactory, 8443));
             } catch (Exception e) {
                 e.printStackTrace();
                 return new DefaultHttpClient();
@@ -199,31 +197,65 @@ public class HttpClientManager {
                 KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
                 keyStore.load(keyStream, "123456".toCharArray());
                 SSLSocketFactory sslSocketFactory = new SSLSocketFactory(keyStore, "123456", trustStore);
-//                sslSocketFactory.setHostnameVerifier(SSLSocketFactoryEx.ALLOW_ALL_HOSTNAME_VERIFIER);
-//                SSLSocketFactoryEx sslSocketFactory = new SSLSocketFactoryEx(keyStore);
-//                SSLCertificateSocketFactory
 
                 KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("X509");
                 TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance("X509");
                 keyManagerFactory.init(keyStore, "123456".toCharArray());
                 trustManagerFactory.init(trustStore);
 
-                HttpParams params = new BasicHttpParams();
-                HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-                HttpProtocolParams.setContentCharset(params, HTTP.DEFAULT_CONTENT_CHARSET);
-                HttpProtocolParams.setUseExpectContinue(params, true);
-                ConnManagerParams.setTimeout(params, 10000);
-                HttpConnectionParams.setConnectionTimeout(params, 10000);
-                HttpConnectionParams.setSoTimeout(params, 10000);
-                SchemeRegistry schemeRegistry = new SchemeRegistry();
-                schemeRegistry.register(new Scheme("https", sslSocketFactory, 8443));
-                ClientConnectionManager clientConnectionManager = new ThreadSafeClientConnManager(params, schemeRegistry);
-                httpClient = new DefaultHttpClient(clientConnectionManager, params);
+                httpClient = new DefaultHttpClient();
+                httpClient.getConnectionManager().getSchemeRegistry()
+                        .register(new Scheme("https", sslSocketFactory, 8443));
             } catch (Exception e) {
                 e.printStackTrace();
                 return new DefaultHttpClient();
             }
         }
         return httpClient;
+    }
+
+    private X509TrustManager trustManagerForCertificates(InputStream in)
+            throws GeneralSecurityException {
+        CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+        Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(in);
+        if (certificates.isEmpty()) {
+            throw new IllegalArgumentException("expected non-empty set of trusted certificates");
+        }
+
+        // Put the certificates a key store.
+        char[] password = "123456".toCharArray();
+        KeyStore keyStore = newEmptyKeyStore(password);
+        int index = 0;
+        for (Certificate certificate : certificates) {
+            String certificateAlias = Integer.toString(index++);
+            keyStore.setCertificateEntry(certificateAlias, certificate);
+        }
+
+        // Use it to build an X509 trust manager.
+        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(
+                KeyManagerFactory.getDefaultAlgorithm());
+        keyManagerFactory.init(keyStore, password);
+
+        TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
+                TrustManagerFactory.getDefaultAlgorithm());
+        trustManagerFactory.init(keyStore);
+
+        TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+        if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
+            throw new IllegalStateException("Unexpected default trust managers:"
+                    + Arrays.toString(trustManagers));
+        }
+        return (X509TrustManager) trustManagers[0];
+    }
+
+    private KeyStore newEmptyKeyStore(char[] password) throws GeneralSecurityException {
+        try {
+            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            InputStream in = null; // By convention, 'null' creates an empty key store.
+            keyStore.load(in, password);
+            return keyStore;
+        } catch (IOException e) {
+            throw new AssertionError(e);
+        }
     }
 }

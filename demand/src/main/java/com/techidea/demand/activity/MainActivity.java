@@ -20,6 +20,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,5 +74,10 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.load)
     void loadClick() {
         startActivity(new Intent(this, LoadDataActivity.class));
+    }
+
+    @OnClick(R.id.button_swipmenu)
+    void listviewClick() {
+        startActivity(new Intent(this, SwipeMenuActivity.class));
     }
 }
