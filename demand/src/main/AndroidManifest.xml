@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.techidea.demand">
+          package="com.techidea.demand">
 
     <application
         android:allowBackup="true"
@@ -12,16 +12,17 @@
             android:name=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
                 <data
                     android:host="MainActivity"
-                    android:scheme="com.android.example" />
+                    android:scheme="com.android.example"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".activity.LoadDataActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".activity.MaterialActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -31,9 +32,7 @@
             <!--<category android:name="android.intent.category.LAUNCHER"/>-->
             <!--</intent-filter>-->
         </activity>
-        <activity
-            android:name=".activity.SwipeMenuActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.UploadImagesActivity"/>
     </application>
 
 </manifest>

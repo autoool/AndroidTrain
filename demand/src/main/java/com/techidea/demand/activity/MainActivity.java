@@ -20,12 +20,10 @@ import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
     }
 
     @Override
@@ -76,8 +74,8 @@ public class MainActivity extends BaseActivity {
         startActivity(new Intent(this, LoadDataActivity.class));
     }
 
-    @OnClick(R.id.button_swipmenu)
-    void listviewClick() {
-        startActivity(new Intent(this, SwipeMenuActivity.class));
+    @OnClick(R.id.button_images)
+    void submit() {
+        startActivity(new Intent(this, UploadImagesActivity.class));
     }
 }
