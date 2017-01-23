@@ -7,6 +7,8 @@ import android.os.Message;
 import android.widget.TextView;
 
 import com.techidea.theroywhy.R;
+import com.techidea.theroywhy.net.httpclient.HttpClientManager;
+import com.techidea.theroywhy.net.volley.VolleyManager;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,7 +33,7 @@ public class NetActivity extends Activity {
 
     HttpClientManager httpClientManager;
     NetHandle netHandle;
-    OkHttpManager okHttpManager;
+
     VolleyManager volleyManager;
 
     @Override
@@ -41,7 +43,6 @@ public class NetActivity extends Activity {
         ButterKnife.bind(this);
         httpClientManager = new HttpClientManager(this);
         netHandle = new NetHandle();
-        okHttpManager = OkHttpManager.getInstance();
         volleyManager = new VolleyManager(getApplicationContext());
     }
 
@@ -59,8 +60,8 @@ public class NetActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String result = httpClientManager.httpsClientGet(Contast.URL_BING);
-                sendMessage(result);
+//                String result = httpClientManager.httpsClientGet(Contast.URL_BING);
+//                sendMessage(result);
             }
         }).start();
 
@@ -71,7 +72,7 @@ public class NetActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                new CustomTrust().run();
+//                new CustomTrust().run();
             }
         }).start();
     }
@@ -86,8 +87,8 @@ public class NetActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String result = okHttpManager.runHttp(Contast.URL_LOCALHOST);
-                sendMessage(result);
+//                String result = okHttpManager.runHttp(Contast.URL_LOCALHOST);
+//                sendMessage(result);
             }
         }).start();
 
@@ -98,8 +99,8 @@ public class NetActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String result = okHttpManager.runHttpBothWay(Contast.URL_BING);
-                sendMessage(result);
+//                String result = okHttpManager.runHttpBothWay(Contast.URL_BING);
+//                sendMessage(result);
             }
         }).start();
     }
@@ -109,8 +110,8 @@ public class NetActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String result = okHttpManager.runHttpOneWay(Contast.URL_BING);
-                sendMessage(result);
+//                String result = okHttpManager.runHttpOneWay(Contast.URL_BING);
+//                sendMessage(result);
             }
         }).start();
     }

@@ -132,6 +132,11 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
         };
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
+
     public BaseRecyclerAdapter<T> refresh(Collection<T> datas) {
         if (datas == null) {
             realDatas = new ArrayList<>();

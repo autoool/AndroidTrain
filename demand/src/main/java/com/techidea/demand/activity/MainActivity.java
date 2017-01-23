@@ -1,13 +1,10 @@
 package com.techidea.demand.activity;
 
 import android.content.Intent;
-import android.support.annotation.MenuRes;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.techidea.demand.R;
 import com.techidea.demand.entity.BufferApi;
@@ -15,7 +12,6 @@ import com.techidea.demand.service.BufferApiRequest;
 
 import java.util.UUID;
 
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {

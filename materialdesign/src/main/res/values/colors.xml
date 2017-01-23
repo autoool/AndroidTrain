@@ -10,4 +10,7 @@
     <color name="white">#FFFFFF</color>
 
     <color name="divider">#ecf0f1</color>
+
+    <color name="cyan">#26a69a</color>
+    <color name="blue">#0386ca</color>
 </resources>

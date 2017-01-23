@@ -1,0 +1,172 @@
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+ext {
+    //Android
+    androidBuildToolsVersion = "24.0.2"
+    androidMinSDKVersion = 15
+    androidTargetSdkVersion = 24
+    androidCompileSdkVersion = 24
+
+    //Libraries
+    supportVersion = '24.1.1'
+    butterKnifeVersion = '7.0.1'
+    rxJavaVersion = '1.1.6'
+    rxAndroidVersion = '1.2.1'
+    rxBindingVersion = '0.4.0'
+    retrofitVersion = '2.1.0'
+    retrofitConvertersVersion = '2.1.0'
+    retrofitConverterGsonVersion = '2.1.0'
+    retrofitAdapterRxjavaVersion = '2.1.0'
+    okHttpVersion = '3.4.1'
+    okHttpLoggingInterceptorVersion = '3.4.1'
+    gsonVersion = '2.6.2'
+    javaxAnnotationVersion = '1.0'
+    greendaoVersion = '2.1.0'
+    freemarkerVersion = '2.3.23'
+    glideVersion = '3.7.0'
+    glideOkhttp3IntegrationVersion = '1.4.0'
+    supportAnnotationsVersion = '23.4.0'
+    recyclerviewSwipeVersion = '1.0.2'
+
+    //Test
+    robolectricVersion = '3.1-rc1'
+    robolectricShadowsVersion = "3.1.1"
+    jUnitVersion = '4.12'
+    mockitoVersion = '2.0.52-beta'
+    dexmakerVersion = '1.0'
+    assertjVersion = '3.4.1'
+    espressoVersion = '2.2.1'
+    testingSupportLibVersion = '0.1'
+    testRulesVersion = '0.4'
+    testRunnerVersion = '0.4'
+
+    //Development
+    leakCanaryVersion = '1.4-beta2'
+    gradleVersion = '2.2.0'
+    svnKitVersion = '1.8.11'
+    crashlyticsCrashlyticsVersion = '2.5.5'
+    crashlyticsAnswersVersion = '1.3.8'
+    fabricToolVersion = '1.21.5'
+    jniLibPath = 'src/main/jniLibs'
+
+    developmentDependencies = [
+            crashlyticsCrashlytics: "com.crashlytics.sdk.android:crashlytics:${crashlyticsCrashlyticsVersion}",
+            crashlyticsAnswers    : "com.crashlytics.sdk.android:answers:${crashlyticsAnswersVersion}",
+            leakcanaryDebug       : "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}",
+            leakcanaryRelease     : "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryVersion}"
+    ]
+
+    dataDependencies = [
+            rxJava                  : "io.reactivex:rxjava:${rxJavaVersion}",
+            rxAndroid               : "io.reactivex:rxandroid:${rxAndroidVersion}",
+            gson                    : "com.google.code.gson:gson:${gsonVersion}",
+            javaxAnnotation         : "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+            retrofit                : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
+            retrofitConverters      : "com.squareup.retrofit2:retrofit-converters:${retrofitConvertersVersion}",
+            retrofitConverterGson   : "com.squareup.retrofit2:converter-gson:${retrofitConverterGsonVersion}",
+            retrofitAdapterRxjava   : "com.squareup.retrofit2:adapter-rxjava:${retrofitAdapterRxjavaVersion}",
+            okHttp                  : "com.squareup.okhttp3:okhttp:${okHttpVersion}",
+            okHttpLoggingInterceptor: "com.squareup.okhttp3:logging-interceptor:${okHttpLoggingInterceptorVersion}",
+            glide                   : "com.github.bumptech.glide:glide:${glideVersion}",
+            glideOkhttp3Integration : "com.github.bumptech.glide:okhttp3-integration:${glideOkhttp3IntegrationVersion}@aar"
+    ]
+
+    dataTestDependencies = [
+            junit      : "junit:junit:${jUnitVersion}",
+            mockito    : "org.mockito:mockito-core:${mockitoVersion}",
+            robolectric: "org.robolectric:robolectric:${robolectricVersion}",
+            assertj    : "org.assertj:assertj-core:${assertjVersion}"
+    ]
+
+    domainDependencies = [
+            rxJava         : "io.reactivex:rxjava:${rxJavaVersion}",
+            gson           : "com.google.code.gson:gson:${gsonVersion}",
+            javaxAnnotation: "javax.annotation:jsr250-api:${javaxAnnotationVersion}"
+    ]
+
+    domainTestDependencies = [
+            junit  : "junit:junit:${jUnitVersion}",
+            mockito: "org.mockito:mockito-core:${mockitoVersion}"
+    ]
+
+    appDependencies = [
+            crashlytics       : "com.crashlytics.sdk.android:crashlytics:${crashlyticsCrashlyticsVersion}@aar",
+            crashlyticsAnswers: "com.crashlytics.sdk.android:answers:${crashlyticsAnswersVersion}@aar",
+            leakcanaryDebug   : "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}",
+            leakcanaryRelease : "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryVersion}",
+            butterKnife       : "com.jakewharton:butterknife:${butterKnifeVersion}",
+            rxBinding         : "com.jakewharton.rxbinding:rxbinding:${rxBindingVersion}",
+            rxBindingSupportV4: "com.jakewharton.rxbinding:rxbinding-support-v4:${rxBindingVersion}",
+            rxBindingDesign   : "com.jakewharton.rxbinding:rxbinding-design:${rxBindingVersion}",
+            rxBindingAppcompat: "com.jakewharton.rxbinding:rxbinding-appcompat-v7:${rxBindingVersion}",
+            javaxAnnotation   : "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+            recyclerView      : "com.android.support:recyclerview-v7:${supportVersion}",
+            appcompat         : "com.android.support:appcompat-v7:${supportVersion}",
+            supportV4         : "com.android.support:support-v4:${supportVersion}",
+            cardview          : "com.android.support:cardview-v7:${supportVersion}",
+            percent           : "com.android.support:percent:${supportVersion}",
+            design            : "com.android.support:design:${supportVersion}",
+            recyclerviewSwipe : "com.yanzhenjie:recyclerview-swipe:${recyclerviewSwipeVersion}"
+    ]
+
+    appTestDependencies = [
+            junit             : "junit:junit:${jUnitVersion}",
+            mockito           : "org.mockito:mockito-core:${mockitoVersion}",
+            robolectric       : "org.robolectric:robolectric:${robolectricVersion}",
+            robolectricShadows: "org.robolectric:shadows-support-v4:${robolectricShadowsVersion}",//如果使用support的Fragment
+            assertj           : "org.assertj:assertj-core:${assertjVersion}",
+            testRunner        : "com.android.support.test:runner:${testRunnerVersion}",
+            testRules         : "com.android.support.test:rules:${testRulesVersion}",
+            dexmaker          : "com.google.dexmaker:dexmaker:${dexmakerVersion}",
+            dexmakerMockito   : "com.google.dexmaker:dexmaker-mockito:${dexmakerVersion}",
+            espresso          : "com.android.support.test.espresso:espresso-core:${espressoVersion}",
+            espressocontrib   : "com.android.support.test.espresso:espresso-contrib:${espressoVersion}",
+            testingSupportLib : "com.android.support.test:testing-support-lib:${testingSupportLibVersion}",
+            recyclerView      : "com.android.support:recyclerview-v7:${supportVersion}",
+            appcompat         : "com.android.support:appcompat-v7:${supportVersion}",
+            supportV4         : "com.android.support:support-v4:${supportVersion}",
+            cardview          : "com.android.support:cardview-v7:${supportVersion}",
+            percent           : "com.android.support:percent:${supportVersion}",
+            supportAnnotations: "com.android.support:support-annotations:${supportVersion}",
+            design            : "com.android.support:design:${supportVersion}",
+            robotium          : 'com.jayway.android.robotium:robotium-solo:5.1'
+    ]
+
+    printerframeworkDependencies = [
+            appcompat         : "com.android.support:appcompat-v7:${supportVersion}",
+            crashlytics       : "com.crashlytics.sdk.android:crashlytics:${crashlyticsCrashlyticsVersion}@aar",
+            crashlyticsAnswers: "com.crashlytics.sdk.android:answers:${crashlyticsAnswersVersion}@aar",
+            greendao          : "de.greenrobot:greendao:${greendaoVersion}",
+            greendaoGenerator : "de.greenrobot:greendao-generator:${greendaoVersion}",
+            freemarker        : "org.freemarker:freemarker:${freemarkerVersion}"
+    ]
+
+    printerframeworkTestDependencies = [
+            junit: "junit:junit:${jUnitVersion}"
+    ]
+
+    requestcacheDependencies = [
+            okHttp            : "com.squareup.okhttp3:okhttp:${okHttpVersion}",
+            okHttpLoggingInterceptor: "com.squareup.okhttp3:logging-interceptor:${okHttpLoggingInterceptorVersion}",
+            greendao          : "de.greenrobot:greendao:${greendaoVersion}",
+            greendaoGenerator : "de.greenrobot:greendao-generator:${greendaoVersion}"
+    ]
+
+    requestcacheTestDependencies = [
+            junit: "junit:junit:${jUnitVersion}"
+    ]
+
+    requestcacheTestProjectDependencies = [
+            appcompat         : "com.android.support:appcompat-v7:${supportVersion}",
+            recyclerView      : "com.android.support:recyclerview-v7:${supportVersion}",
+            gson                    : "com.google.code.gson:gson:${gsonVersion}",
+    ]
+
+    requestcacheTestProjectTestDependencies = [
+            junit: "junit:junit:${jUnitVersion}"
+    ]
+}

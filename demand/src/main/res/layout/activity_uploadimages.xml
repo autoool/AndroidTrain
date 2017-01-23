@@ -8,18 +8,19 @@
         android:layout_width="match_parent"
         android:layout_height="100dp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview_images"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/edittext_content"></android.support.v7.widget.RecyclerView>
-
     <Button
         android:id="@+id/button_submit"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_below="@id/recyclerview_images"
+        android:layout_alignParentBottom="true"
         android:background="@color/blue"
         android:text="提交" />
-    
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_images"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/button_submit"
+        android:layout_below="@id/edittext_content" />
+
 </RelativeLayout>

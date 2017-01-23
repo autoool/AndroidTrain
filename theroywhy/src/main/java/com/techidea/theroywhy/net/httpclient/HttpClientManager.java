@@ -64,6 +64,7 @@ public class HttpClientManager {
     public HttpClientManager(Context context) {
         this.httpParams = new BasicHttpParams();
         this.context = context;
+
     }
 
     //

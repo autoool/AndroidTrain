@@ -101,6 +101,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void setMenu(@MenuRes int menuRes, Toolbar.OnMenuItemClickListener onMenuItemClickListener) {
         this.menuRes = menuRes;
+        setOnMenuItemClickListener(onMenuItemClickListener);
     }
 
     @Override
