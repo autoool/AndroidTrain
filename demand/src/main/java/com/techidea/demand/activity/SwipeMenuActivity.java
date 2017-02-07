@@ -39,10 +39,10 @@ public class SwipeMenuActivity extends Activity {
 
     private void initStudents() {
         students = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            Student student = new Student(i, " zhang" + String.valueOf(i));
-            students.add(student);
-        }
+//        for (int i = 0; i < 10; i++) {
+//            Student student = new Student(i, " zhang" + String.valueOf(i));
+//            students.add(student);
+//        }
     }
 
     private int dp2px(int dp) {
