@@ -11,6 +11,8 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.techidea.demand.aidl.IPerson;
@@ -18,6 +20,7 @@ import com.techidea.theroywhy.R;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -26,6 +29,9 @@ import butterknife.OnClick;
  */
 
 public class AidlActivity extends AppCompatActivity {
+
+    @Bind(R.id.imagebutton_back)
+    ImageButton imageButtonBack;
 
     private IPerson person;
     boolean isBind = false;
@@ -47,6 +53,9 @@ public class AidlActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aidl);
         ButterKnife.bind(this);
+
+        imageButtonBack.setImageResource(R.mipmap.scan_back);
+//        imageButtonBack.setBackgroundResource(R.mipmap.scan_back);
     }
 
     @OnClick(R.id.button_bind)

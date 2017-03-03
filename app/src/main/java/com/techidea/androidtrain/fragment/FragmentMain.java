@@ -52,6 +52,12 @@ public class FragmentMain extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+//        getLoaderManager().initLoader(0, null, this);
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         this.mContext = context;

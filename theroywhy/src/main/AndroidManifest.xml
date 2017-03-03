@@ -34,21 +34,38 @@
             <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
-
-
         <!--launchmode-->
         <activity
             android:name=".launchmode.FirstActivity"
             android:launchMode="singleTask">
-
 
         </activity>
         <activity android:name=".launchmode.SecondActivity">
 
         </activity>
 
+        <activity
+            android:name=".bluetooth.BlueToothActivity"
+            android:theme="@style/AppTheme"></activity>
+        <activity android:name=".bluetooth.BlueToothActivityy"></activity>
+
         <!--进程间通信-->
         <activity android:name=".aidl.AidlActivity">
+
+        </activity>
+
+        <!--notification-->
+        <activity android:name=".notification.NotificationActivity"></activity>
+        <activity android:name=".notification.ResultActivity" />
+
+        <!--animation-->
+        <activity android:name=".animation.AnimationActivity" />
+
+        <activity android:name=".view.activity.RecyclerviewActivity">
+
+        </activity>
+
+        <activity android:name=".customview.banner.BannerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

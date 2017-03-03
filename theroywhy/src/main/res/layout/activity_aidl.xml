@@ -22,4 +22,10 @@
         android:layout_height="wrap_content"
         android:text="greet" />
 
+    <ImageButton
+        android:id="@+id/imagebutton_back"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@color/colorPrimary" />
+
 </LinearLayout>
