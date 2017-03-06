@@ -5,6 +5,8 @@ import com.techidea.theroywhy.net.Response;
 
 import org.junit.Test;
 
+import java.util.Random;
+
 import static org.junit.Assert.*;
 
 /**
@@ -36,5 +38,37 @@ public class ExampleUnitTest {
 
         System.out.println(response1.getHasReversal());
 
+    }
+
+    @Test
+    public void testRandom() {
+        int[] results = randomNumber(4);
+        for (int i = 0; i < results.length; i++)
+            System.out.println(results[i]);
+    }
+
+    public int[] randomNumber(int n) {
+        //[2-23] length  = n
+        int[] result = new int[n];
+
+        int i = 0;
+        Random random = new Random(System.currentTimeMillis());
+        while (i < n) {
+            int randomTmp = Math.abs(random.nextInt()) % 21 + 2;
+            if (!contains(result, randomTmp)) {
+                result[i] = randomTmp;
+                i++;
+            }
+        }
+        return result;
+    }
+
+    private boolean contains(int[] params, int param) {
+        boolean result = false;
+        for (int i = 0; i < params.length; i++) {
+            if (param == params[i])
+                result = true;
+        }
+        return result;
     }
 }
