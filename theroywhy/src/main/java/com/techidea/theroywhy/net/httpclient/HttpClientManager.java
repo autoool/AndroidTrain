@@ -59,6 +59,7 @@ public class HttpClientManager {
     private HttpParams httpParams;
     private Context context;
     private ResponseCallBack responseCallBack;
+//    private CloseableHttpClient httpClientt;
 
 
     public HttpClientManager(Context context) {

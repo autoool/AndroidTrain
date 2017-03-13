@@ -42,7 +42,7 @@ public class ExampleUnitTest {
 
     @Test
     public void testRandom() {
-        int[] results = randomNumber(4);
+        int[] results = randomNumber(12);
         for (int i = 0; i < results.length; i++)
             System.out.println(results[i]);
     }

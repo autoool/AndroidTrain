@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.techidea.theroywhy.R;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -258,7 +259,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
         }
     }
 
-    public void updateItetm(int position) {
+    public void updateItem(int position) {
         if (getItemCount() > position) {
             notifyItemChanged(position);
         }
@@ -296,7 +297,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
     public void setState(int state, boolean update) {
         this.state = state;
         if (update)
-            updateItetm(getItemCount() - 1);
+            updateItem(getItemCount() - 1);
     }
 
     public int getState() {
@@ -387,6 +388,13 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
         public HeaderViewHolder(View itemView) {
             super(itemView);
         }
+    }
+
+    public interface CallBack {
+
+        Context getContext();
+
+        Date getSystemTime();
     }
 
 }
