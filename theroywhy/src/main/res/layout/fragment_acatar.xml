@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <com.techidea.theroywhy.customview.shape.AvatarView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/avatar_iew_rectangle_shape_three"
+            android:src="@mipmap/avatar1" />
+
+        <com.techidea.theroywhy.customview.shape.AvatarView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/avatar_view_rectangle_shape"
+            android:src="@mipmap/avatar2" />
+
+        <com.techidea.theroywhy.customview.shape.AvatarView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/avatar_view_oval_shape"
+            android:src="@mipmap/avatar3" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.techidea.theroywhy.customview.shape.AvatarView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/avatar_view_rectangle_two"
+            android:src="@mipmap/avatar4" />
+
+        <com.techidea.theroywhy.customview.shape.AvatarView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@mipmap/avatar_view_bg1"
+            android:src="@mipmap/avatar5" />
+
+        <com.techidea.theroywhy.customview.shape.AvatarView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@mipmap/avatar_view_bg2"
+            android:src="@mipmap/avatar6" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.techidea.theroywhy.customview.shape.AvatarView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@mipmap/avatar_view_bg3"
+            android:src="@mipmap/avatar8" />
+
+        <com.techidea.theroywhy.customview.shape.AvatarView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@mipmap/avatar_view_bg4"
+            android:src="@mipmap/avatar9" />
+
+        <com.techidea.theroywhy.customview.shape.AvatarView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@mipmap/avatar_view_bg5"
+            android:src="@mipmap/avatar1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.techidea.theroywhy.customview.shape.AvatarView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@mipmap/avatar_view_bg6"
+            android:src="@mipmap/avatar2" />
+
+    </LinearLayout>
+
+</LinearLayout>

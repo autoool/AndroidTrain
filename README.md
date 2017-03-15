@@ -25,3 +25,12 @@
 ### view的动画与属性动画
 #### 
 AlphaAnimation（透明度动画）、RotateAnimation（旋转动画）、ScaleAnimation（缩放动画）、TranslateAnimation（平移动画）
+
+
+
+## avatar 头像，自定义头像形状
+http://www.jianshu.com/p/f4088146f5ad
+![](./images/avatar.png)
+
+
+
