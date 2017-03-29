@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.techidea.commonlibrary.widget.DialogHelper;
 import com.techidea.theroywhy.R;
+import com.techidea.theroywhy.customview.shape.AvatarActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -18,6 +20,7 @@ import butterknife.OnClick;
 
 public class ActionActivity extends AppCompatActivity {
 
+    private static final String TAG = ActionActivity.class.getSimpleName();
     ProgressDialog progressDialog;
 
     @Override
@@ -25,6 +28,7 @@ public class ActionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_action);
         ButterKnife.bind(this);
+
     }
 
     @OnClick(R.id.button_action1)
@@ -37,12 +41,17 @@ public class ActionActivity extends AppCompatActivity {
         intent.setClass(this, ApplicationActivity.class);
         getApplicationContext().startActivity(intent);*/
 
-        if (progressDialog == null) {
-            progressDialog = DialogHelper.getProgressDialog(this, "正在加载……");
-        }
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
+        startActivity(new Intent(this, AvatarActivity.class));
+
+//        if (progressDialog == null) {
+//            progressDialog = DialogHelper.getProgressDialog(this, "正在加载……");
+//        }
+//        progressDialog.setCanceledOnTouchOutside(false);
+//        progressDialog.show();
+
     }
+
+
 
     @OnClick(R.id.button_action2)
     void action2() {
@@ -54,5 +63,16 @@ public class ActionActivity extends AppCompatActivity {
 //        Intent intent = new Intent();
 //        intent.setAction("cn.betatown.yunpos.simple.hand.annel.UNIONSETTING");
 //        startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume Test");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

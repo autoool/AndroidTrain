@@ -1,2 +1,2 @@
-include ':app', ':coordinator', ':controls', ':demand', ':theroywhy', ':timelog', ':swipwmenulistview', 'commonlibrary', 'materialdesign'
+include ':app', ':coordinator', ':controls', ':demand', ':theroywhy', ':timelog', ':swipwmenulistview', ':pluginframework', 'commonlibrary', 'materialdesign'
 
