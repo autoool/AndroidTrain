@@ -12,4 +12,15 @@ public class ExampleUnitTest {
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
     }
+
+    @Test
+    public void tryCatchTest() {
+        try {
+            throw  new RuntimeException("error");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace().clone());
+            System.out.println();
+        }
+    }
 }

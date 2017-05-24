@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.techidea.theroywhy.action.MyLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
 
     <Button
         android:id="@+id/button_action1"
@@ -15,4 +16,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="action2" />
-</LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageview_click"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@mipmap/ic_launcher" />
+
+    <com.techidea.theroywhy.action.MyButton
+        android:id="@+id/mybutton01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="mybutton" />
+</com.techidea.theroywhy.action.MyLinearLayout>

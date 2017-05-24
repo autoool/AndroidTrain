@@ -1,5 +1,6 @@
 package techidea.com.pluginframework.hook;
 
+import android.app.Activity;
 import android.app.Instrumentation;
 
 import java.lang.reflect.Field;
@@ -36,11 +37,10 @@ public class HookHelper {
 
     public static void attachActivityContext() throws Exception{
 
-        Class<?> activityClass = Class.forName("android.app.Activity");
-
+        Class activityClass = Class.forName("android.app.Activity");
         Field instrumentationField = activityClass.getDeclaredField("mInstrumentation");
         instrumentationField.setAccessible(true);
-        Instrumentation instrumentation = (Instrumentation)instrumentationField.get(activityClass);
+        Instrumentation instrumentation = (Instrumentation)(instrumentationField.get(activityClass));
         //创建代理对象
         Instrumentation evilInstrumentation = new EvilInstrumentation(instrumentation);
 

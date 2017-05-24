@@ -42,6 +42,7 @@ public class MainActivity extends Activity {
         // 比较简单, 直接替换这个Activity的此字段即可.
 
         startActivity(intent);
+        getApplicationContext().startActivity(intent);
     }
 
     @Override

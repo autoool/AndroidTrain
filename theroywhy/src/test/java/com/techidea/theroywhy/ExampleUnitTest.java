@@ -3,6 +3,7 @@ package com.techidea.theroywhy;
 import com.google.gson.Gson;
 import com.techidea.theroywhy.net.Response;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Random;
@@ -37,6 +38,30 @@ public class ExampleUnitTest {
         response1 = gson.fromJson(responseR, Response.class);
 
         System.out.println(response1.getHasReversal());
+
+    }
+
+    @Test
+    public void testJavaOperator() {
+
+/*        mPrivateFlags |= PFLAG_PRESSED;
+    } else {
+        mPrivateFlags &= ~PFLAG_PRESSED;*/
+        int operator1 = 1;
+        int operator2 = 0;
+        operator2 |= operator1;
+        Assert.assertEquals(1, operator2);
+        int operator3 = 1;  //001  110  第一位是符号位  -2
+        int operator4 = 0;  //000   111
+//        Assert.assertEquals(1, ~operator4);
+//        Assert.assertEquals(0, ~operator3);//-2  位取反
+        System.out.println(String.valueOf(~operator3)); //1 -2
+        System.out.println(String.valueOf(~operator4));// 0 -1
+        System.out.println(String.valueOf(~2));// 2 -3
+        int operator5 = 0;
+        int operator6 = 1;
+        operator6 &= ~operator5;
+        Assert.assertEquals(1, operator6);
 
     }
 

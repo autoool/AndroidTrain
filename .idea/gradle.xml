@@ -9,13 +9,14 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/Application" />
+            <option value="$PROJECT_DIR$/CustomView" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/commonlibrary" />
             <option value="$PROJECT_DIR$/controls" />
             <option value="$PROJECT_DIR$/coordinator" />
             <option value="$PROJECT_DIR$/demand" />
-            <option value="$PROJECT_DIR$/myapplication" />
+            <option value="$PROJECT_DIR$/materialdesign" />
+            <option value="$PROJECT_DIR$/pluginframework" />
             <option value="$PROJECT_DIR$/swipwmenulistview" />
             <option value="$PROJECT_DIR$/theroywhy" />
             <option value="$PROJECT_DIR$/timelog" />
