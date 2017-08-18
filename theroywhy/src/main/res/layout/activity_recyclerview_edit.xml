@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:rating="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.techidea.theroywhy.customview.MallRatingBar
+                    android:id="@+id/ratingbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    rating:clickable="true"
+                    rating:starEmpty="@mipmap/star_empty"
+                    rating:starFill="@mipmap/star_full"
+                    rating:starImageHeight="60dp"
+                    rating:starImageMarginRight="5dp"
+                    rating:starImagePadding="0dp"
+                    rating:starImageWidth="60dp"
+                    rating:starNum="5" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ratingbar" />
+
+            </RelativeLayout>
+
+        </FrameLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <attr name="text" format="string"/>
-    <attr name="textColor" format="color"/>
-    <attr name="textSize" format="dimension"/>
-    <attr name="src" format="reference"/>
+    <attr name="text" format="string" />
+    <attr name="textColor" format="color" />
+    <attr name="textSize" format="dimension" />
+    <attr name="src" format="reference" />
     <attr name="ScaleType">
-        <enum name="fillXY" value="0"/>
-        <enum name="center" value="1"/>
+        <enum name="fillXY" value="0" />
+        <enum name="center" value="1" />
     </attr>
 
     <attr name="firstColor" format="color" />
@@ -15,20 +15,20 @@
     <attr name="circleWidth" format="dimension" />
     <attr name="dotCount" format="integer" />
     <attr name="splitSize" format="integer" />
-    <attr name="bg" format="reference"/>
+    <attr name="bg" format="reference" />
 
     <declare-styleable name="CustomTitTextView">
-        <attr name="text"/>
-        <attr name="textColor"/>
-        <attr name="textSize"/>
+        <attr name="text" />
+        <attr name="textColor" />
+        <attr name="textSize" />
     </declare-styleable>
 
     <declare-styleable name="CustomImageText">
-        <attr name="text"/>
-        <attr name="textColor"/>
-        <attr name="textSize"/>
-        <attr name="src"/>
-        <attr name="ScaleType"/>
+        <attr name="text" />
+        <attr name="textColor" />
+        <attr name="textSize" />
+        <attr name="src" />
+        <attr name="ScaleType" />
     </declare-styleable>
 
     <declare-styleable name="CustomVolumControlBar">
@@ -39,7 +39,6 @@
         <attr name="splitSize" />
         <attr name="bg" />
     </declare-styleable>
-
 
 
     <!---->
@@ -108,6 +107,22 @@
         <attr name="circle_banner_indicator_radius" format="dimension" />
         <attr name="circle_banner_indicator_space" format="dimension" />
         <attr name="circle_banner_indicator_indicator_radius" format="dimension" />
+    </declare-styleable>
+
+
+    <declare-styleable name="RatingBar" tools:ignore="ResourceName">
+        <attr name="starImageSize" format="dimension" />
+        <attr name="starImageWidth" format="dimension" />
+        <attr name="starImageHeight" format="dimension" />
+        <attr name="starImagePadding" format="dimension" />
+        <attr name="starImageMarginRight" format="dimension" />
+        <attr name="starCount" format="integer" />
+        <attr name="starNum" format="integer" />
+        <attr name="starEmpty" format="reference" />
+        <attr name="starFill" format="reference" />
+        <attr name="starHalf" format="reference" />
+        <attr name="clickable" format="boolean" />
+        <attr name="halfstart" format="boolean" />
     </declare-styleable>
 
 

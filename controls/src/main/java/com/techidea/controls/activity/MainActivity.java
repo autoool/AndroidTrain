@@ -1,6 +1,8 @@
 package com.techidea.controls.activity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
@@ -8,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -56,10 +59,29 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, AppCompatTestActivity.class));
     }
 
+    @OnClick(R.id.textview_vedio)
+    void vedioClick() {
+        startActivity(new Intent(this, VedioActivity.class));
+//        try {
+//            String vedio_url = "https://html5demos.com/assets/dizzy.mp4";
+//            Uri uri = Uri.parse(vedio_url);
+//            Intent intent = new Intent(Intent.ACTION_VIEW);
+//            Log.v("URI:::::::::", uri.toString());
+//            intent.setDataAndType(uri, "video/*");
+//            startActivity(intent);
+//        } catch (ActivityNotFoundException nofound) {
+//            nofound.printStackTrace();
+//            Log.d("TAG", "notfound");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+    }
+
     @Override
     protected void onDestroy() {
         ButterKnife.unbind(this);
         super.onDestroy();
+
     }
 
     public void showMsg(String msg) {

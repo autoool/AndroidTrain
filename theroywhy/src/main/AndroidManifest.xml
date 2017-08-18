@@ -69,19 +69,32 @@
 
         </activity>
 
-        <activity android:name=".action.ActionActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity
+            android:name=".action.ActionActivity"
+            android:theme="@style/NoTitleTheme">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
+
         <activity android:name=".action.ApplicationActivity">
 
         </activity>
 
         <activity android:name=".customview.shape.AvatarActivity">
 
+        </activity>
+
+        <activity
+            android:name="com.techidea.theroywhy.view.activity.ToolbarActivity"
+            android:theme="@style/NoTitleTheme">
+
+        </activity>
+
+        <activity android:name=".view.activity.RecyclerviewEditActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

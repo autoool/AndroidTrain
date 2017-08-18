@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.techidea.theroywhy.R;
+import com.techidea.theroywhy.view.activity.ToolbarActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -130,6 +131,7 @@ public class ActionActivity extends AppCompatActivity {
 //        }
 //        progressDialog.setCanceledOnTouchOutside(false);
 //        progressDialog.show();
+        startActivity(new Intent(this, ToolbarActivity.class));
 
     }
 
